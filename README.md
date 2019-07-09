@@ -45,6 +45,10 @@
 * ``for dirs in $(ls --color=never -l | grep "^d" | awk '{print $9}'); do du -hs $dirs;done`` visualizar tamanho de diretórios
 ---
 
+### grep
+* ``fgrep -o | wc -l`` contar caractere no arquivo
+---
+
 ### gzip
 * ``gzip -9`` compactar ZIP
 * ``gzip -d`` descompactar ZIP
