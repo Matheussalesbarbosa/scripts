@@ -1,12 +1,12 @@
-### apt-get
-* ``apt-get autoremove`` remover pacotes não utilizados
-* ``apt-get check`` checar se não há dependências quebradas
-* ``apt-get clean`` apagar download de pacotes
-* ``apt-get install`` instalar pacote
-* ``apt-get install -f`` instalar dependências de pacote
-* ``apt-get install exfat-fuse exfat-utils`` instalar pacote exfat
-* ``apt-get update`` atualizar pacotes
-* ``apt-get upgrade`` atualizar sistema
+### apt
+* ``apt autoremove`` remover pacotes não utilizados
+* ``apt check`` checar se não há dependências quebradas
+* ``apt clean`` apagar download de pacotes
+* ``apt install`` instalar pacote
+* ``apt install -f`` instalar dependências de pacote
+* ``apt install exfat-fuse exfat-utils`` instalar pacote exfat
+* ``apt update`` atualizar pacotes
+* ``apt upgrade`` atualizar sistema
 ---
 
 ### cat
@@ -47,11 +47,6 @@
 
 ### grep
 * ``fgrep -o | wc -l`` contar caractere no arquivo
----
-
-### gzip
-* ``gzip -9`` compactar ZIP
-* ``gzip -d`` descompactar ZIP
 ---
 
 ### history
@@ -109,11 +104,6 @@
 ### tar
 * ``tar -czvf`` compactar .tar.gz
 * ``tar -vzxf`` descompactar .tar.gz
-* ``tar -xvf`` descompactar .tar
----
-
-### unrar
-* ``unrar`` descompactar .rar
 ---
 
 ### wget
@@ -121,7 +111,8 @@
 ---
 
 ### zip
-* ``zip -r`` compactar .zip
+* ``zip -9 -r`` compactar .zip
+* ``unzip`` descompactar .zip
 ---
 
 - UPDATE BASH
@@ -130,3 +121,4 @@ curl http://data.biostarhandbook.com/install/bash_profile.txt >> ~/.bash_profile
 curl http://data.biostarhandbook.com/install/bashrc.txt >> ~/.bashrc
 source	~/.bash_profile
 ```
+---
