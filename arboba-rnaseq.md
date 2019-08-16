@@ -330,7 +330,6 @@ bash STAR_alignReads_SortedByCoordinated_cmd.sh
     - Log.out: contém informações e mensagens do processo de análise
     - Log.progress.out: contém informações resumidas da estatística do processo da análise de acordo com o progresso de cada etapa
     - SJ.out.tab: contém informações das junções de splicing
-- __STARgenome/: metadados do mapeamento
 ---
 
 ### Contagem dos transcritos
