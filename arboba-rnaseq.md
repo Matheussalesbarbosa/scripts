@@ -15,7 +15,7 @@ Criar environment rna-seq
 ```sh
 $HOME/softwares/miniconda3/bin/conda create --name rna-seq
 ```
-- ``create`` criar um environment para instalar uma lista específica de pacotes (packages)
+- ``create`` cria um environment para instalar uma lista específica de pacotes (packages)
 - ``--name`` nome do environment
 <br/>
 
@@ -35,7 +35,7 @@ conda install --name rna-seq --channel bioconda subread
 conda install --name rna-seq --channel bioconda diamond
 conda install --name rna-seq --channel bioconda krona
 ```
-- ``install`` instalar uma lista de pacotes
+- ``install`` instala uma lista de pacotes
 - ``--name`` nome do environment
 - ``--channel`` canal do pacote a ser instalado (site para buscar pacotes: https://anaconda.org/search)
 <br/>
@@ -124,6 +124,7 @@ nohup fastqc *.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/arboba-run4-fastQC
 cd $HOME/datasets/arboba-rnaseq/arboba-run5/
 nohup fastqc *.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/arboba-run5-fastQC/ --threads 12
 ```
+- ``*.fastq.gz``: seleciona os arquivos *.fastq.gz para a análise
 - ``--outdir`` diretório para os arquivos de saída da análise (output)
 - ``--threads`` número de threads utilizados para processar simultaneamente os processos da análise
 <br/>
@@ -141,10 +142,10 @@ nohup multiqc --fullnames --title ArbovirusBahiaRun4 --interactive --export $HOM
 cd $HOME/datasets/arboba-rnaseq/arboba-run5-fastQC/
 nohup multiqc --fullnames --title ArbovirusBahiaRun5 --interactive --export $HOME/datasets/arboba-rnaseq/arboba-run5-fastQC/
 ```
-- ``--fullnames`` manter o nome do arquivo que vai ser analisado
-- ``--title`` criar um título para o relatório do multiqc
-- ``--interactive`` utilizar plots iterativos
-- ``--export`` exportar plots das análises do multiqc
+- ``--fullnames`` mantém o nome do arquivo que vai ser analisado
+- ``--title`` cria um título para o relatório do multiqc
+- ``--interactive`` utiliza plots iterativos
+- ``--export`` exporta plots das análises do multiqc
 <br/>
 
 Excluir os diretórios do basecalling (etapa após backup)
@@ -200,6 +201,7 @@ Realizar basecalling utilizando a ferramenta *fastQC*
 cd $HOME/datasets/arboba-rnaseq/
 nohup fastqc *.fastq.gz --outdir $HOME/datasets/arboba-rnaseq-fastQC/ --threads 12
 ```
+- ``*.fastq.gz``: seleciona os arquivos *.fastq.gz para a análise
 - ``--outdir`` diretório para os arquivos de saída da análise (output)
 - ``--threads`` número de threads utilizados para processar simultaneamente os processos da análise
 <br/>
@@ -209,10 +211,10 @@ Agregar resultados do basecalling utilizando a ferramenta *multiQC*
 cd $HOME/datasets/arboba-rnaseq-fastQC/
 nohup multiqc --fullnames --title ArbovirusBahiaRNASeq --interactive --export $HOME/datasets/arboba-rnaseq-fastQC/
 ```
-- ``--fullnames`` manter o nome do arquivo que vai ser analisado
-- ``--title`` criar um título para o relatório do multiqc
-- ``--interactive`` utilizar plots iterativos
-- ``--export`` exportar plots das análises do multiqc
+- ``--fullnames`` mantém o nome do arquivo que vai ser analisado
+- ``--title`` cria um título para o relatório do multiqc
+- ``--interactive`` utiliza plots iterativos
+- ``--export`` exporta plots das análises do multiqc
 <br/>
 
 Excluir o diretório do basecalling (etapa após backup)
@@ -229,7 +231,8 @@ Gerar script para a filtrar e cortar (trimar) as leituras de baixa qualidade
 #!/bin/bash
 echo '#!/bin/bash' >> trimmomatic_cmd.sh
 for i in `ls -1 *R1*.fastq.gz | sed 's/\_R1.fastq.gz//'`
-do echo nohup trimmomatic PE \
+do echo nohup trimmomatic \
+PE \
 -phred33 \
 -threads 12 \
 $HOME/datasets/arboba-rnaseq/arboba-rnaseq_concatenated/$i\_R1.fastq.gz $HOME/datasets/arboba-rnaseq/arboba-rnaseq_concatenated/$i\_R2.fastq.gz $HOME/datasets/arboba-rnaseq/arboba-rnaseq_trimmed/$i\_R1_paired.fastq.gz $HOME/datasets/arboba-rnaseq/arboba-rnaseq_trimmed/$i\_R1_unpaired.fastq.gz $HOME/datasets/arboba-rnaseq/arboba-rnaseq_trimmed/$i\_R2_paired.fastq.gz $HOME/datasets/arboba-rnaseq/arboba-rnaseq_trimmed/$i\_R2_unpaired.fastq.gz \
@@ -242,13 +245,13 @@ MINLEN:36 \
 done
 ```
 - ``PE`` modo paired-end do trimmomatic
-- ``-phred33`` x
+- ``-phred33`` escala de qualidade utilizada pelas metodologias Sanger e Illumina 1.8+
 - ``-threads`` número de threads utilizados para processar simultaneamente os processos da análise
 - ``ILLUMINACLIP`` identifica qual tipo de adaptador será trimado
-- ``LEADING`` cortar bases de nucleotídeos no início das reads, de acordo com a escala Q-score (https://www.drive5.com/usearch/manual/quality_score.html)
-- ``TRAILING`` cortar bases de nucleotídeos no final das reads, de acordo com a escala Q-score (https://www.drive5.com/usearch/manual/quality_score.html)
+- ``LEADING`` corta bases de nucleotídeos no início das reads, de acordo com a escala Q-score (https://www.drive5.com/usearch/manual/quality_score.html)
+- ``TRAILING`` corta bases de nucleotídeos no final das reads, de acordo com a escala Q-score (https://www.drive5.com/usearch/manual/quality_score.html)
 - ``SLIDINGWINDOW`` estratégia de "janela deslizante" para varredura da read a partir da extremidade 5' para trimar as leituras, caso o Q-score seja menor que o estipulado
-- ``MINLEN`` descartar reads de acordo com o tamanho mínimo definido
+- ``MINLEN`` descarta reads de acordo com o tamanho mínimo definido
 <br/>
 
 Filtrar e cortar (trimar) as leituras de baixa qualidade utilizando a ferramenta *trimmomatic*
@@ -257,9 +260,9 @@ bash trimmomatic_cmd.sh
 ```
 - São gerados 4 outputs:
     - R1_paired.fastq.gz: contém reads R1 que pareiam com as reads R2
-    - R1_unpaired.fastq.gz: contém reads R1 que NÃO pareiam com as reads R2 (não será utilizado nas análises)
+    - R1_unpaired.fastq.gz: contém reads R1 que NÃO pareiam com as reads R2 (não será utilizado nas análises posteriores)
     - R2_paired.fastq.gz: contém reads R2 que pareiam com as reads R1
-    - R2_unpaired.fastq.gz: contém reads R2 que NÃO pareiam com as reads R1 (não será utilizado nas análises)
+    - R2_unpaired.fastq.gz: contém reads R2 que NÃO pareiam com as reads R1 (não será utilizado nas análises posteriores)
 ---
 
 ### Mapeamento do genoma referência com as amostras
@@ -314,7 +317,7 @@ done
 - ``--runMode`` tipo de funcionamento do STAR (genomeGenerate: gerar index; alignReads: mapear reads)
 - ``--genomeDir`` diretório dos arquivos do index
 - ``--sjdbGTFfile`` arquivo de anotação dos transcritos do genoma referência
-- ``--readFilesIn`` arquivos de entrada das reads R1 e R2 paired da amostra
+- ``--readFilesIn`` arquivos input das reads R1 e R2 paired da amostra
 - ``--readFilesCommand`` comando utilizado caso as reads estejam compactadas (para arquivos *.gz, utilizar zcat; para *.bz2 utilizar bunzip2 -c)
 - ``--outFileNamePrefix`` prefixo para nomear os arquivos output
 - ``--outSAMtype`` determina o tipo de output do mapeamento (padrão: SAM; BAM Unsorted: arquivo binário sem estar ordenado; BAM SortedByCoordinate: arquivo binário ordenado de acordo com a anotação dos transcritos do genoma referência)
@@ -342,7 +345,7 @@ nohup featureCounts -T 12 -s 2 -p -F GTF -a $HOME/datasets/arboba-rnaseq/gencode
 - ``-T`` número de threads utilizados para processar simultaneamente os processos da análise
 - ``-s`` realiza a contagem de acordo com a forma que as reads foram geradas (0: unstranded; 1: stranded; 2: stranded reverso)
 - ``-p`` os fragmentos serão contados ao invés das reads
-- ``-F`` formado do arquivo de anotação dos transcritos do genoma referência (GTF; SAF; GFF)
+- ``-F`` formato do arquivo de anotação dos transcritos do genoma referência (GTF; SAF; GFF)
 - ``-a`` arquivo de anotação dos transcritos do genoma referência
 - ``-o`` nome do arquivo output com as contagem dos transcritos (delimitado por tabulação)
 - ``*bam`` seleciona as amostras para a contagem 
