@@ -27,13 +27,7 @@ source $HOME/softwares/miniconda3/bin/activate rna-seq
 
 Instalar aplicações no enviroment rna-seq
 ```sh
-conda install --name rna-seq --channel bioconda fastqc
-conda install --name rna-seq --channel bioconda multiqc
-conda install --name rna-seq --channel bioconda trimmomatic
-conda install --name rna-seq --channel bioconda star
-conda install --name rna-seq --channel bioconda subread
-conda install --name rna-seq --channel bioconda diamond
-conda install --name rna-seq --channel bioconda krona
+conda install --name rna-seq --channel bioconda fastqc multiqc trimmomatic star subread
 ```
 - ``install`` instala uma lista de pacotes
 - ``--name`` nome do environment
