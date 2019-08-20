@@ -511,6 +511,9 @@ mv 140_S33* 193_S11* 200_S18* 210_S62* 225_S20* 227_S49* 241_S53* 39_S35* ZK0099
 ZK0214_S9* ZK0215_S58* ZK0219_S24* ZK0361_S51* ZK0362_S50* ZK0363_S25* ZK0364_S13* ZK0365_S39* ZK0366_S40* \
 $HOME/datasets/arboba-rnaseq/align/align-zikv/
 ```
+---
+
+### Contar as leituras das amostras
 <br/>
 
 Realizar contagem dos transcritos das amostras para cada desenho experimental
@@ -528,4 +531,179 @@ nohup featureCounts -T 12 -s 2 -p -F GTF -a $HOME/datasets/arboba-rnaseq/refs/ge
 - ``*bam`` seleciona as amostras para a contagem
 - `counts.txt` arquivo de saída com a contagem dos transcritos de todas as amostras
 - `counts.txt.summary` arquivo de saída com o sumário da contagem dos transcritos de todas as amostras
+---
+
+### Análise da expressão diferencial de genes 
+<br/>
+
+Montar script de análise de acordo com o desenho experimental (baseado em: [stephenturner/deseq2-analysis-template.R](https://gist.github.com/stephenturner/f60c1934405c127f09a6)
+- script para chikv: [DESeq_chikv.R](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/DESeq_chikv.R)
+- script para denv: [DESeq_denv.R](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/DESeq_denv.R)
+- script para zikv: [DESeq_zikv.R](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/DESeq_zikv.R)
+```r
+### RNA-seq analysis
+### Analise de RNA-seq
+
+## Import & pre-process -----------------------------------------------------------------------------------------
+## Pre-processamento & importacao -------------------------------------------------------------------------------
+
+# Import data from featureCounts
+# Importar dados obtidos do featureCounts
+countdata <- read.table("F:\\RNASeqArbovirusFiocruzBA\\counts\\counts-chikv\\counts.txt", header=TRUE, row.names=1)
+
+# Remove first five columns (chr, start, end, strand, length)
+# Remover as p´rimeiras cinco colunas (chr, start, end, strand, length)
+countdata <- countdata[ ,6:ncol(countdata)]
+
+# Remove _Aligned.sortedByCoord.out.bam from filenames
+# Remover _Aligned.sortedByCoord.out.bam do nome dos arquivos
+colnames(countdata) <- gsub("\\_Aligned.sortedByCoord.out.bam$", "", colnames(countdata))
+
+# Convert to matrix
+# Converter para matrix
+countdata <- as.matrix(countdata)
+head(countdata)
+
+# Assign condition (first "(rep(x)" contain the expansion - exp, second " (rep(x)" are controls - ctl)
+# Atribuir condicoes (o primeiro "(rep(x)" são os experimentos - exp, o segundo "(rep(x)" são os controles)
+(condition <- factor(c(rep("exp", 37), rep("ctl", 9))))
+
+
+## Analysis with DESeq2 -----------------------------------------------------------------------------------------
+## Analise com DESeq2 -------------------------------------------------------------------------------------------
+
+library(DESeq2)
+
+# Create a coldata frame and instantiate the DESeqDataSet. See ?DESeqDataSetFromMatrix
+# Criar o frame coldata e iniciar o DESeqDataSet. Veja ?DESeqDataSetFromMatrix
+(coldata <- data.frame(row.names=colnames(countdata), condition))
+dds <- DESeqDataSetFromMatrix(countData=countdata, colData=coldata, design=~condition)
+dds <- estimateSizeFactors(dds)
+counts(dds, normalized=TRUE)
+idx <- rowSums(counts(dds, normalized=TRUE) >= 5) >=3
+dds <- dds[idx,]
+ 
+# Run the DESeq pipeline
+# Iniciar o pipeline DESeq
+dds <- DESeq(dds)
+
+# Plot dispersions
+# Plots de dispersao
+png("F:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\qc-dispersions.png", 1000, 1000, pointsize=20)
+plotDispEsts(dds, main="Dispersion plot")
+dev.off()
+
+# Regularized log transformation for clustering/heatmaps, etc
+# Transformar valores de log para clusterizacao/heatmaps, etc
+rld <- rlogTransformation(dds)
+head(assay(rld))
+hist(assay(rld))
+
+# Colors for plots below
+# Cores para os plots
+library(RColorBrewer)
+(mycols <- brewer.pal(8, "Dark2")[1:length(unique(condition))])
+
+# Sample distance heatmap
+# Heatmap de dispersao das amostras
+sampleDists <- as.matrix(dist(t(assay(rld))))
+library(gplots)
+png("F:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\qc-heatmap-samples.png", w=1000, h=1000, pointsize=20)
+heatmap.2(as.matrix(sampleDists), key=F, trace="none",
+          col=colorpanel(100, "black", "white"),
+          ColSideColors=mycols[condition], RowSideColors=mycols[condition],
+          margin=c(10, 10), main="Sample Distance Matrix")
+dev.off()
+
+# Principal components analysis
+# Analise de componentes principais
+rld_pca <- function (rld, intgroup = "condition", ntop = 500, colors=NULL, legendpos="bottomleft", main="PCA Biplot", textcx=1, ...) {
+  require(genefilter)
+  require(calibrate)
+  require(RColorBrewer)
+  rv = rowVars(assay(rld))
+  select = order(rv, decreasing = TRUE)[seq_len(min(ntop, length(rv)))]
+  pca = prcomp(t(assay(rld)[select, ]))
+  fac = factor(apply(as.data.frame(colData(rld)[, intgroup, drop = FALSE]), 1, paste, collapse = " : "))
+  if (is.null(colors)) {
+    if (nlevels(fac) >= 3) {
+      colors = brewer.pal(nlevels(fac), "Paired")
+    }   else {
+      colors = c("black", "red")
+    }
+  }
+  pc1var <- round(summary(pca)$importance[2,1]*100, digits=1)
+  pc2var <- round(summary(pca)$importance[2,2]*100, digits=1)
+  pc1lab <- paste0("PC1 (",as.character(pc1var),"%)")
+  pc2lab <- paste0("PC1 (",as.character(pc2var),"%)")
+  plot(PC2~PC1, data=as.data.frame(pca$x), bg=colors[fac], pch=21, xlab=pc1lab, ylab=pc2lab, main=main, ...)
+  with(as.data.frame(pca$x), textxy(PC1, PC2, labs=rownames(as.data.frame(pca$x)), cex=textcx))
+  legend(legendpos, legend=levels(fac), col=colors, pch=20)
+  #     rldyplot(PC2 ~ PC1, groups = fac, data = as.data.frame(pca$rld),
+  #            pch = 16, cerld = 2, aspect = "iso", col = colours, main = draw.key(key = list(rect = list(col = colours),
+  #                                                                                         terldt = list(levels(fac)), rep = FALSE)))
+}
+png("F:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\qc-pca.png", 1000, 1000, pointsize=20)
+rld_pca(rld, colors=mycols, intgroup="condition", xlim=c(-75, 35))
+dev.off()
+
+# Get differential expression results
+# Obter resultados de genes diferencialmente expressos
+res <- results(dds)
+table(res$padj<0.05)
+
+## Order by adjusted p-value
+## Ordenar de acordo com valor de p ajustado
+res <- res[order(res$padj), ]
+
+## Merge with normalized count data
+## Mesclar com dados de contagem normalizados
+resdata <- merge(as.data.frame(res), as.data.frame(counts(dds, normalized=TRUE)), by="row.names", sort=FALSE)
+names(resdata)[1] <- "Gene"
+head(resdata)
+
+## Write results
+## Salvar resultados
+write.csv(resdata, file="F:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\diffexpr-results.csv")
+
+## Examine plot of p-values
+## Examinar plot do valor de p
+hist(res$pvalue, breaks=20, col="grey")
+
+## Examine independent filtering
+## Examinar os filtros independentes
+attr(res, "filterThreshold")
+plot(attr(res,"filterNumRej"), type="b", xlab="quantiles of baseMean", ylab="number of rejections")
+
+## MA plot
+## plot MA
+maplot <- function (res, thresh=0.05, labelsig=TRUE, textcx=1, ...) {
+  with(res, plot(baseMean, log2FoldChange, pch=20, cex=.5, log="x", ...))
+  with(subset(res, padj<thresh), points(baseMean, log2FoldChange, col="red", pch=20, cex=1.5))
+  if (labelsig) {
+    require(calibrate)
+    with(subset(res, padj<thresh), textxy(baseMean, log2FoldChange, labs=Gene, cex=textcx, col=2))
+  }
+}
+png("F:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\diffexpr-maplot.png", 1500, 1000, pointsize=20)
+maplot(resdata, main="MA Plot")
+dev.off()
+
+## Volcano plot with "significant" genes labeled
+## Plot estilo vulcao com genes "significantes marcados
+volcanoplot <- function (resdata, lfcthresh=2, sigthresh=0.05, main="Volcano Plot", legendpos="bottomright", labelsig=TRUE, textcx=1, ...) {
+  with(res, plot(log2FoldChange, -log10(pvalue), pch=20, main=main, ...))
+  with(subset(res, padj<sigthresh ), points(log2FoldChange, -log10(pvalue), pch=20, col="red", ...))
+  with(subset(res, abs(log2FoldChange)>lfcthresh), points(log2FoldChange, -log10(pvalue), pch=20, col="orange", ...))
+  with(subset(res, padj<sigthresh & abs(log2FoldChange)>lfcthresh), points(log2FoldChange, -log10(pvalue), pch=20, col="green", ...))
+  if (labelsig) {
+    require(calibrate)
+    with(subset(res, padj<sigthresh & abs(log2FoldChange)>lfcthresh), textxy(log2FoldChange, -log10(pvalue), labs=Gene, cex=textcx, ...))
+  }
+  legend(legendpos, xjust=1, yjust=1, legend=c(paste("FDR<",sigthresh,sep=""), paste("|LogFC|>",lfcthresh,sep=""), "both"), pch=20, col=c("red","orange","green"))
+}
+png("F:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\diffexpr-volcanoplot.png", 1200, 1000, pointsize=20)
+volcanoplot(resdata, lfcthresh=1, sigthresh=0.05, textcx=.8, xlim=c(-2.3, 2))
+dev.off()
+```
 ---
