@@ -43,10 +43,10 @@ Criar diretórios de trabalho no workstation
 - ``$HOME/datasets/arboba-rnaseq/align/align-denv`` leituras mapeadas de DENV vs. CONTROLES
 - ``$HOME/datasets/arboba-rnaseq/align/align-zikv``leituras mapeadas de ZIKV vs. CONTROLES 
 - ``$HOME/datasets/arboba-rnaseq/concatenated`` leituras concatenadas
-- ``$HOME/datasets/arboba-rnaseq/counts`` arquivos de contagem dos genes
-- ``$HOME/datasets/arboba-rnaseq/counts/counts-chikv`` arquivos de contagem dos genes de CHIKV vs. CONTROLES
-- ``$HOME/datasets/arboba-rnaseq/counts/counts-denv`` arquivos de contagem dos genes de DENV vs. CONTROLES
-- ``$HOME/datasets/arboba-rnaseq/counts/counts-zikv`` arquivos de contagem dos genes de ZIKV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/counts`` contagem dos genes
+- ``$HOME/datasets/arboba-rnaseq/counts/counts-chikv`` contagem dos genes de CHIKV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/counts/counts-denv`` contagem dos genes de DENV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/counts/counts-zikv`` contagem dos genes de ZIKV vs. CONTROLES
 - ``$HOME/datasets/arboba-rnaseq/index`` índices do genoma humano de referência GRCh38.p12
 - ``$HOME/datasets/arboba-rnaseq/qc`` dados de qualidade
 - ``$HOME/datasets/arboba-rnaseq/qc/qc-concatenated`` dados de qualidade das corridas concatenadas 
@@ -397,8 +397,7 @@ bash STAR_alignReads_SortedByCoordinated_cmd.sh
 <br/>
 
 Definir os desenhos experimentais
-- 
-<br/>
+
 | sample     | group   |
 | ---------- | ------- |
 | ZK0041_S23 | chikv   |
