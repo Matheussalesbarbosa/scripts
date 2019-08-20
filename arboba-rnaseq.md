@@ -9,6 +9,10 @@ Criar diretórios de trabalho no workstation
 └── $HOME
     ├── datasets
         └── arboba-rnaseq
+            ├── align
+                ├── align-chikv_ctrl
+                ├── align-denv_ctrl
+                ├── align-zikv_ctrl
             ├── concatenated
             ├── counts
             ├── index
@@ -28,13 +32,16 @@ Criar diretórios de trabalho no workstation
             └── trimmed
 └── softwares
         └── miniconda3
-
 ```
 - ``$HOME/datasets/`` diretório para alocar os datasets para análises
 - ``$HOME/datasets/arboba-rnaseq`` diretório de análise do "ArbovirusFiocruzBA"
-- ``$HOME/datasets/arboba-rnaseq/concatenated`` 
+- ``$HOME/datasets/arboba-rnaseq/align`` diretório para as leituras mapeadas com o genoma humano de referência GRCh38.p12
+- ``$HOME/datasets/arboba-rnaseq/align/align-chikv_ctrl`` diretório com as leituras mapeadas para a análise CHIKV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/align/align-denv_ctrl`` diretório com as leituras mapeadas para a análise DENV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/align/align-zikv_ctrl``diretório com as leituras mapeadas para a análise ZIKV vs. CONTROLES 
+- ``$HOME/datasets/arboba-rnaseq/concatenated`` diretório para as leituras concatenadas
 - ``$HOME/datasets/arboba-rnaseq/counts`` 
-- ``$HOME/datasets/arboba-rnaseq/index`` 
+- ``$HOME/datasets/arboba-rnaseq/index`` diretório para os índices do genoma humano de referência GRCh38.p12
 - ``$HOME/datasets/arboba-rnaseq/qc`` diretório para dados de qualidade
 - ``$HOME/datasets/arboba-rnaseq/qc/qc-concatenated`` diretório para dados de qualidade das corridas concatenadas 
 - ``$HOME/datasets/arboba-rnaseq/qc/qc-run1`` diretório para dados de qualidade da corrida 1 do RNA-Seq
@@ -42,13 +49,13 @@ Criar diretórios de trabalho no workstation
 - ``$HOME/datasets/arboba-rnaseq/qc/qc-run3`` diretório para dados de qualidade da corrida 3 do RNA-Seq
 - ``$HOME/datasets/arboba-rnaseq/qc/qc-run4`` diretório para dados de qualidade da corrida 4 do RNA-Seq
 - ``$HOME/datasets/arboba-rnaseq/qc/qc-run5`` diretório para dados de qualidade da corrida 5 do RNA-Seq
-- ``$HOME/datasets/arboba-rnaseq/refs`` 
+- ``$HOME/datasets/arboba-rnaseq/refs`` diretório para os arquivos do genoma humano de referência GRCh38.p12
 - ``$HOME/datasets/arboba-rnaseq/run1`` diretório temporário para a corrida 1 do RNA-Seq
 - ``$HOME/datasets/arboba-rnaseq/run2`` diretório temporário para a corrida 2 do RNA-Seq
 - ``$HOME/datasets/arboba-rnaseq/run3`` diretório temporário para a corrida 3 do RNA-Seq
 - ``$HOME/datasets/arboba-rnaseq/run4`` diretório temporário para a corrida 4 do RNA-Seq
 - ``$HOME/datasets/arboba-rnaseq/run5`` diretório temporário para a corrida 5 do RNA-Seq
-- ``$HOME/datasets/arboba-rnaseq/trimmed``
+- ``$HOME/datasets/arboba-rnaseq/trimmed`` diretório para as leituras após filtragem de qualidade
 - ``$HOME/softwares/`` diretório para instalar aplicações
 ---
 
@@ -57,8 +64,9 @@ Criar diretórios de trabalho no workstation
 
 Instalar última versão do *Miniconda*
 ```sh
-curl https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o $HOME/softwares/miniconda3.sh
-bash $HOME/softwares/miniconda3.sh -bfp $HOME/softwares/miniconda3 && rm -rf $HOME/softwares/miniconda3.sh
+curl https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh --output $HOME/softwares/miniconda3.sh
+bash $HOME/softwares/miniconda3.sh -bfp $HOME/softwares/miniconda3 && rm --recursive --force $HOME/softwares/miniconda3.sh
+echo 'export PATH="$HOME/softwares/miniconda3/bin:/usr/local/share/rsi/idl/bin:$PATH"' >> $HOME/.bashrc
 ```
 <br/>
 
@@ -164,8 +172,8 @@ nohup fastqc $HOME/datasets/arboba-rnaseq/run3/*.fastq.gz --outdir $HOME/dataset
 nohup fastqc $HOME/datasets/arboba-rnaseq/run4/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-run4/ --threads 12
 nohup fastqc $HOME/datasets/arboba-rnaseq/run5/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-run5/ --threads 12
 ```
-- ``nohup``: permite executar o comando em segundo plano
-- ``*.fastq.gz``: seleciona os arquivos *.fastq.gz para a análise
+- ``nohup`` permite executar o comando em segundo plano
+- ``*.fastq.gz`` seleciona os arquivos *.fastq.gz para a análise
 - ``--outdir`` diretório para os arquivos de saída da análise (output)
 - ``--threads`` número de threads utilizados para processar simultaneamente os processos da análise
 <br/>
@@ -180,7 +188,7 @@ cd $HOME/datasets/arboba-rnaseq/qc/qc-run3/ && nohup multiqc --fullnames --title
 cd $HOME/datasets/arboba-rnaseq/qc/qc-run4/ && nohup multiqc --fullnames --title ArbovirusBahiaRun4 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-run4/
 cd $HOME/datasets/arboba-rnaseq/qc/qc-run5/ && nohup multiqc --fullnames --title ArbovirusBahiaRun5 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-run5/
 ```
-- ``nohup``: permite executar o comando em segundo plano
+- ``nohup`` permite executar o comando em segundo plano
 - ``--fullnames`` mantém o nome do arquivo que vai ser analisado
 - ``--title`` cria um título para o relatório do multiqc
 - ``--interactive`` utiliza plots iterativos
@@ -230,9 +238,9 @@ Realizar análise de qualidade utilizando a ferramenta *fastQC*
 #!/bin/bash
 nohup fastqc $HOME/datasets/arboba-rnaseq/concatenated*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-concatenated/ --threads 12
 ```
-- ``nohup``: permite executar o comando em segundo plano
-- ``*.fastq.gz``: seleciona os arquivos *.fastq.gz para a análise
-- ``--outdir`` diretório para os arquivos de saída da análise (output)
+- ``nohup`` permite executar o comando em segundo plano
+- ``*.fastq.gz`` seleciona os arquivos *.fastq.gz para a análise
+- ``--outdir`` diretório para os arquivos de saída da análise
 - ``--threads`` número de threads utilizados para processar simultaneamente os processos da análise
 <br/>
 
@@ -242,7 +250,7 @@ Agregar resultados de qualidade utilizando a ferramenta *multiQC*
 #!/bin/bash
 cd $HOME/datasets/arboba-rnaseq/qc/qc-concatenated/ && nohup multiqc --fullnames --title ArbovirusBahiaRNASeq --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-concatenated/
 ```
-- ``nohup``: permite executar o comando em segundo plano
+- ``nohup`` permite executar o comando em segundo plano
 - ``--fullnames`` mantém o nome do arquivo que vai ser analisado
 - ``--title`` cria um título para o relatório do multiqc
 - ``--interactive`` utiliza plots iterativos
@@ -252,7 +260,8 @@ cd $HOME/datasets/arboba-rnaseq/qc/qc-concatenated/ && nohup multiqc --fullnames
 ### Filtrar e cortar as leituras de baixa qualidade
 <br/>
 
-Gerar script para a filtrar e cortar (trimar) as leituras de baixa qualidade
+Gerar script para a filtrar e cortar as leituras de baixa qualidade
+- script: [trimmomatic.sh](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/trimmomatic.sh)
 ```sh
 #!/bin/bash
 echo '#!/bin/bash' >> trimmomatic_cmd.sh
@@ -261,7 +270,7 @@ do echo nohup trimmomatic \
 PE \
 -phred33 \
 -threads 12 \
-$HOME/datasets/arboba-rnaseq/arboba-rnaseq_concatenated/$i\_R1.fastq.gz $HOME/datasets/arboba-rnaseq/arboba-rnaseq_concatenated/$i\_R2.fastq.gz $HOME/datasets/arboba-rnaseq/arboba-rnaseq_trimmed/$i\_R1_paired.fastq.gz $HOME/datasets/arboba-rnaseq/arboba-rnaseq_trimmed/$i\_R1_unpaired.fastq.gz $HOME/datasets/arboba-rnaseq/arboba-rnaseq_trimmed/$i\_R2_paired.fastq.gz $HOME/datasets/arboba-rnaseq/arboba-rnaseq_trimmed/$i\_R2_unpaired.fastq.gz \
+$HOME/datasets/arboba-rnaseq/concatenated/$i\_R1.fastq.gz $HOME/datasets/arboba-rnaseq/concatenated/$i\_R2.fastq.gz $HOME/datasets/arboba-rnaseq/trimmed/$i\_R1_paired.fastq.gz $HOME/datasets/arboba-rnaseq/trimmed/$i\_R1_unpaired.fastq.gz $HOME/datasets/arboba-rnaseq/trimmed/$i\_R2_paired.fastq.gz $HOME/datasets/arboba-rnaseq/trimmed/$i\_R2_unpaired.fastq.gz \
 ILLUMINACLIP:$HOME/softwares/miniconda3/envs/rna-seq/share/trimmomatic-0.39-1/adapters/TruSeq3-PE.fa:2:30:10 \
 LEADING:3 \
 TRAILING:3 \
@@ -270,59 +279,72 @@ MINLEN:36 \
 >> trimmomatic_cmd.sh
 done
 ```
+- ``nohup`` permite executar o comando em segundo plano
 - ``PE`` modo paired-end do trimmomatic
 - ``-phred33`` escala de qualidade utilizada pelas metodologias Sanger e Illumina 1.8+
 - ``-threads`` número de threads utilizados para processar simultaneamente os processos da análise
+- ``_R1.fastq.gz`` arquivo de entrada com as leituras R1 da amostra
+- ``_R2.fastq.gz`` arquivo de entrada com as leituras R2 da amostra
+- ``_R1_paired.fastq.gz`` arquivo de saída para as leituras R1 que pareiam com as leituras R2
+- ``_R1_unpaired.fastq.gz`` arquivo de saída para as leituras R1 que NÃO pareiam com as leituras R2
+- ``_R2_paired.fastq.gz`` arquivo de saída para as leituras R2 que pareiam com as leituras R1
+- ``_R2_unpaired.fastq.gz`` arquivo de saída para as leituras R2 que NÃO pareiam com as leituras R1
 - ``ILLUMINACLIP`` identifica qual tipo de adaptador será trimado
-- ``LEADING`` corta bases de nucleotídeos no início das reads, de acordo com a escala Q-score (https://www.drive5.com/usearch/manual/quality_score.html)
-- ``TRAILING`` corta bases de nucleotídeos no final das reads, de acordo com a escala Q-score (https://www.drive5.com/usearch/manual/quality_score.html)
-- ``SLIDINGWINDOW`` estratégia de "janela deslizante" para varredura da read a partir da extremidade 5' para trimar as leituras, caso o Q-score seja menor que o estipulado
-- ``MINLEN`` descarta reads de acordo com o tamanho mínimo definido
+- ``LEADING`` corta bases de nucleotídeos no início das leituras, de acordo com a escala Q-score (https://www.drive5.com/usearch/manual/quality_score.html)
+- ``TRAILING`` corta bases de nucleotídeos no final das leituras, de acordo com a escala Q-score (https://www.drive5.com/usearch/manual/quality_score.html)
+- ``SLIDINGWINDOW`` estratégia de "janela deslizante" para varredura da leitura a partir da extremidade 5' para trimar as leituras, caso o Q-score seja menor que o estipulado
+- ``MINLEN`` descarta leituras de acordo com o tamanho mínimo definido
 <br/>
 
-Filtrar e cortar (trimar) as leituras de baixa qualidade utilizando a ferramenta *trimmomatic*
+Filtrar e cortar as leituras de baixa qualidade utilizando a ferramenta *trimmomatic*
 ```sh
 bash trimmomatic_cmd.sh
 ```
-- São gerados 4 outputs:
-    - R1_paired.fastq.gz: contém reads R1 que pareiam com as reads R2
-    - R1_unpaired.fastq.gz: contém reads R1 que NÃO pareiam com as reads R2 (não será utilizado nas análises posteriores)
-    - R2_paired.fastq.gz: contém reads R2 que pareiam com as reads R1
-    - R2_unpaired.fastq.gz: contém reads R2 que NÃO pareiam com as reads R1 (não será utilizado nas análises posteriores)
 ---
 
-### Mapeamento do genoma referência com as amostras
+### Mapeamento do genoma humano de referência com as amostras
 <br/>
 
-Obter arquivos do genoma referência no portal GENCODE (https://www.gencodegenes.org/human/)
-- Genoma referência humano em *.fa: ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_31/gencode.v31.chr_patch_hapl_scaff.annotation.gtf.gz 
-- Anotação do genoma em *.gtf: ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_31/GRCh38.p12.genome.fa.gz
+Obter arquivos do genoma humano de referência GRCh38.p12 no portal GENCODE (https://www.gencodegenes.org/human/)
+```sh
+curl ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_31/GRCh38.p12.genome.fa.gz --output $HOME/datasets/arboba-rnaseq/refs/GRCh38.p12.genome.fa.gz
+curl ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_31/gencode.v31.chr_patch_hapl_scaff.annotation.gtf.gz --output $HOME/datasets/arboba-rnaseq/refs/gencode.v31.chr_patch_hapl_scaff.annotation.gtf.gz
+```
+- ``GRCh38.p12.genome.fa.gz`` genoma humano de referência GRCh38.p12
+- ``gencode.v31.chr_patch_hapl_scaff.annotation.gtf.gz`` anotação do genoma humano de referência GRCh38.p12
 ```
 .
-└── arboba-rnaseq
-    └── GRCh38.p12.genome.fa.gz
-    └── gencode.v31.chr_patch_hapl_scaff.annotation.gtf.gz
+└── $HOME
+    ├── datasets
+        └── arboba-rnaseq
+            ├── refs
+                ├── GRCh38.p12.genome.fa.gz
+                └── gencode.v31.chr_patch_hapl_scaff.annotation.gtf.gz
 ```
 <br/>
 
-Descompactar arquivos do genoma referência GRCh38.p12
+Descompactar arquivos do genoma humano de referência GRCh38.p122
 ```sh
-gunzip -d $HOME/datasets/arboba-rnaseq/GRCh38.p12.genome.fa.gz
-gunzip -d $HOME/datasets/arboba-rnaseq/gencode.v31.chr_patch_hapl_scaff.annotation.gtf.gz
+gunzip --decompress $HOME/datasets/arboba-rnaseq/GRCh38.p12.genome.fa.gz
+gunzip --decompress $HOME/datasets/arboba-rnaseq/gencode.v31.chr_patch_hapl_scaff.annotation.gtf.gz
 ```
 <br/>
 
-Construir os índices (index) do genoma referência GRCh38.p12 utilizando a ferramenta *STAR*
+Construir os índices do genoma humano de referência GRCh38.p12 utilizando a ferramenta *STAR*
+- script: [STAR_genomeGenerate.sh](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/STAR_genomeGenerate.sh)
 ```sh
-nohup STAR --runThreadN 12 --runMode genomeGenerate --genomeDir $HOME/datasets/arboba-rnaseq/arboba-rnaseq_index/ --genomeFastaFiles $HOME/datasets/arboba-rnaseq/GRCh38.p12.genome.fa
+#!/bin/bash
+nohup STAR --runThreadN 12 --runMode genomeGenerate --genomeDir $HOME/datasets/arboba-rnaseq/index/ --genomeFastaFiles $HOME/datasets/arboba-rnaseq/refs/GRCh38.p12.genome.fa
 ```
+- ``nohup`` permite executar o comando em segundo plano
 - ``--runThreadN`` número de threads utilizados para processar simultaneamente os processos da análise
-- ``--runMode`` tipo de funcionamento do STAR (genomeGenerate: gerar index; alignReads: mapear reads)
+- ``--runMode`` tipo de funcionamento do STAR (genomeGenerate: gerar índices; alignReads: mapear leituras)
 - ``--genomeDir`` diretório para armazenar os arquivos do index
 - ``--genomeFastaFiles`` arquivo do genoma referência em *.fasta
 <br/>
 
 Gerar script para mapear o genoma referência GRCh38.p12 com as amostras
+- script: [STAR_alignReads_SortedByCoordinated.sh](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/STAR_alignReads_SortedByCoordinated.sh)
 ```sh
 #!/bin/bash
 echo '#!/bin/bash' >> STAR_alignReads_SortedByCoordinated_cmd.sh
@@ -330,52 +352,173 @@ for i in `ls -1 *R1_paired*.fastq.gz | sed 's/\_R1_paired.fastq.gz//'`
 do echo nohup STAR \
 --runThreadN 12 \
 --runMode alignReads \
---genomeDir $HOME/datasets/arboba-rnaseq/arboba-rnaseq_index/ \
---sjdbGTFfile $HOME/datasets/arboba-rnaseq/gencode.v31.chr_patch_hapl_scaff.annotation.gtf \
---readFilesIn $HOME/datasets/arboba-rnaseq/arboba-rnaseq_trimmed/$i\_R1_paired.fastq.gz $HOME/datasets/arboba-rnaseq/arboba-rnaseq_trimmed/$i\_R2_paired.fastq.gz \
+--genomeDir $HOME/datasets/arboba-rnaseq/index/ \
+--sjdbGTFfile $HOME/datasets/arboba-rnaseq/refs/gencode.v31.chr_patch_hapl_scaff.annotation.gtf \
+--readFilesIn $HOME/datasets/arboba-rnaseq/trimmed/$i\_R1_paired.fastq.gz $HOME/datasets/arboba-rnaseq/trimmed/$i\_R2_paired.fastq.gz \
 --readFilesCommand zcat \
---outFileNamePrefix $i\_ \
+--outFileNamePrefix $HOME/datasets/arboba-rnaseq/align/$i\_ \
 --outSAMtype BAM SortedByCoordinate \
+--outReadsUnmapped Fastx \
 >> STAR_alignReads_SortedByCoordinated_cmd.sh
 done
 ```
+- ``nohup`` permite executar o comando em segundo plano
 - ``--runThreadN`` número de threads utilizados para processar simultaneamente os processos da análise
-- ``--runMode`` tipo de funcionamento do STAR (genomeGenerate: gerar index; alignReads: mapear reads)
+- ``--runMode`` tipo de funcionamento do STAR (genomeGenerate: gerar índices; alignReads: mapear leituras)
 - ``--genomeDir`` diretório dos arquivos do index
 - ``--sjdbGTFfile`` arquivo de anotação dos transcritos do genoma referência
-- ``--readFilesIn`` arquivos input das reads R1 e R2 paired da amostra
-- ``--readFilesCommand`` comando utilizado caso as reads estejam compactadas (para arquivos *.gz, utilizar zcat; para *.bz2 utilizar bunzip2 -c)
-- ``--outFileNamePrefix`` prefixo para nomear os arquivos output
-- ``--outSAMtype`` determina o tipo de output do mapeamento (padrão: SAM; BAM Unsorted: arquivo binário sem estar ordenado; BAM SortedByCoordinate: arquivo binário ordenado de acordo com a anotação dos transcritos do genoma referência)
+- ``--readFilesIn`` arquivos de entrada das leituras R1 e R2 paired da amostra
+- ``--readFilesCommand`` comando utilizado caso as leituras estejam compactadas (para arquivos *.gz, utilizar zcat; para *.bz2 utilizar bunzip2 -c)
+- ``--outFileNamePrefix`` determina o diretório e o prefixo para nomear os arquivos de saída
+- ``--outSAMtype`` determina o tipo de arquivo de sada do mapeamento (padrão: SAM; BAM Unsorted: arquivo binário sem estar ordenado; BAM SortedByCoordinate: arquivo binário ordenado de acordo com a anotação dos transcritos do genoma referência)
+- ``--outReadsUnmapped`` determina que as leituras não mapeadas gerem arquivos de saída 
+- ``_Aligned.sortedByCoord.out.bam`` arquivo de saída do mapeamento da amostra
+- ``_Log.final.out`` arquivo de saída com o sumário da estatística do mapeamento
+- ``_Log.out`` arquivo de saída com informações resumidas da estatística do processo da análise de acordo com o progresso de cada etapa
+- ``_Log.progress.out`` arquivo de saída com informações e mensagens do processo de análise
+- ``_SJ.out.tab`` arquivo de saída com informações das junções de splicing
+- ``_Unmapped.out.mate1`` arquivos de saída das leituras R1 não mapeadas
+- ``_Unmapped.out.mate2`` arquivos de saída das leituras R2 não mapeadas
 <br/>
 
 Mapear o genoma referência GRCh38.p12 para cada amostra utilizando a ferramenta *STAR*
 ```sh
 bash STAR_alignReads_SortedByCoordinated_cmd.sh
 ```
-- São gerados 6 outputs:
-    - Aligned.sortedByCoord.out.bam: mapeamento da amostra
-    - Log.final.out: contém o sumário com a estatística do mapeamento
-    - Log.out: contém informações e mensagens do processo de análise
-    - Log.progress.out: contém informações resumidas da estatística do processo da análise de acordo com o progresso de cada etapa
-    - SJ.out.tab: contém informações das junções de splicing
 ---
 
-### Contagem dos transcritos
+### Definir os desenhos esperimentais para a contagem de leituras
 <br/>
 
-Realizar contagem dos transcritos das amostras
+Definir os desenhos experimentais
+| sample     | group   |
+| ---------- | ------- |
+| ZK0041_S23 | chikv   |
+| ZK0043_S65 | chikv   |
+| ZK0046_S2  | chikv   |
+| ZK0048_S32 | chikv   |
+| ZK0049_S34 | chikv   |
+| ZK0066_S1  | chikv   |
+| ZK0085_S31 | chikv   |
+| ZK0087_S16 | chikv   |
+| ZK0088_S30 | chikv   |
+| ZK0094_S52 | chikv   |
+| ZK0104_S27 | chikv   |
+| ZK0126_S19 | chikv   |
+| ZK0129_S63 | chikv   |
+| ZK0130_S22 | chikv   |
+| ZK0134_S15 | chikv   |
+| ZK0135_S3  | chikv   |
+| ZK0137_S60 | chikv   |
+| ZK0140_S43 | chikv   |
+| ZK0143_S21 | chikv   |
+| ZK0145_S12 | chikv   |
+| ZK0160_S10 | chikv   |
+| ZK0162_S29 | chikv   |
+| ZK0170_S68 | chikv   |
+| ZK0171_S46 | chikv   |
+| ZK0172_S7  | chikv   |
+| ZK0180_S6  | chikv   |
+| ZK0182_S41 | chikv   |
+| ZK0185_S54 | chikv   |
+| ZK0187_S55 | chikv   |
+| ZK0188_S26 | chikv   |
+| ZK0191_S45 | chikv   |
+| ZK0193_S17 | chikv   |
+| ZK0194_S67 | chikv   |
+| ZK0195_S28 | chikv   |
+| ZK0196_S59 | chikv   |
+| ZK0198_S44 | chikv   |
+| ZK0202_S14 | chikv   |
+| ZK0214_S9  | control |
+| ZK0215_S58 | control |
+| ZK0219_S24 | control |
+| ZK0361_S51 | control |
+| ZK0362_S50 | control |
+| ZK0363_S25 | control |
+| ZK0364_S13 | control |
+| ZK0365_S39 | control |
+| ZK0366_S40 | control |
+<br/>
+
+| sample     | group   |
+| ---------- | ------- |
+| 2137_S38   | denv    |
+| 2167_S48   | denv    |
+| 2173_S42   | denv    |
+| 3051_S66   | denv    |
+| 3053_S47   | denv    |
+| 4171_S57   | denv    |
+| 4175_S37   | denv    |
+| 4230_S5    | denv    |
+| ZK0214_S9  | control |
+| ZK0215_S58 | control |
+| ZK0219_S24 | control |
+| ZK0361_S51 | control |
+| ZK0362_S50 | control |
+| ZK0363_S25 | control |
+| ZK0364_S13 | control |
+| ZK0365_S39 | control |
+| ZK0366_S40 | control |
+<br/>
+
+| sample     | group   |
+| ---------- | ------- |
+| 140_S33    | zikv    |
+| 193_S11    | zikv    |
+| 200_S18    | zikv    |
+| 210_S62    | zikv    |
+| 225_S20    | zikv    |
+| 227_S49    | zikv    |
+| 241_S53    | zikv    |
+| 39_S35     | zikv    |
+| ZK0099_S64 | zikv    |
+| ZK0110_S8  | zikv    |
+| ZK0111_S61 | zikv    |
+| ZK0128_S36 | zikv    |
+| ZK0214_S9  | control |
+| ZK0215_S58 | control |
+| ZK0219_S24 | control |
+| ZK0361_S51 | control |
+| ZK0362_S50 | control |
+| ZK0363_S25 | control |
+| ZK0364_S13 | control |
+| ZK0365_S39 | control |
+| ZK0366_S40 | control |
+<br/>
+
+Organizar as leituras mapeadas de acordo com o desenho experimental
+- script: [mv_alignReads.sh](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/mv_alignReads.sh)
 ```sh
-nohup featureCounts -T 12 -s 2 -p -F GTF -a $HOME/datasets/arboba-rnaseq/gencode.v31.chr_patch_hapl_scaff.annotation.gtf -o arboba-rnaseq_counts_SortedByCoordinated.txt *bam
+#!/bin/bash
+#chikv versus controles
+mv ZK0041_S23* ZK0043_S65* ZK0046_S2* ZK0048_S32* ZK0049_S34* ZK0066_S1* ZK0085_S31* ZK0087_S16* ZK0088_S30* ZK0094_S52* ZK0104_S27* ZK0126_S19* ZK0129_S63* ZK0130_S22* ZK0134_S15* ZK0135_S3* ZK0137_S60* ZK0140_S43* ZK0143_S21* ZK0145_S12* ZK0160_S10* ZK0162_S29* ZK0170_S68* ZK0171_S46* ZK0172_S7* ZK0180_S6* ZK0182_S41* ZK0185_S54* ZK0187_S55* ZK0188_S26* ZK0191_S45* ZK0193_S17* ZK0194_S67* ZK0195_S28* ZK0196_S59* ZK0198_S44* ZK0202_S14* \
+ZK0214_S9* ZK0215_S58* ZK0219_S24* ZK0361_S51* ZK0362_S50* ZK0363_S25* ZK0364_S13* ZK0365_S39* ZK0366_S40* \
+$HOME/datasets/arboba-rnaseq/align/align-chikv/
+#denv versus controles
+mv 2137_S38* 2167_S48* 2173_S42* 3051_S66* 3053_S47* 4171_S57* 4175_S37* 4230_S5* \
+ZK0214_S9* ZK0215_S58* ZK0219_S24* ZK0361_S51* ZK0362_S50* ZK0363_S25* ZK0364_S13* ZK0365_S39* ZK0366_S40* \
+$HOME/datasets/arboba-rnaseq/align/align-denv/
+#zikv versus controles
+mv 140_S33* 193_S11* 200_S18* 210_S62* 225_S20* 227_S49* 241_S53* 39_S35* ZK0099_S64* ZK0110_S8* ZK0111_S61* ZK0128_S36* \
+ZK0214_S9* ZK0215_S58* ZK0219_S24* ZK0361_S51* ZK0362_S50* ZK0363_S25* ZK0364_S13* ZK0365_S39* ZK0366_S40* \
+$HOME/datasets/arboba-rnaseq/align/align-zikv/
 ```
+<br/>
+
+Realizar contagem dos transcritos das amostras para cada desenho experimental
+```sh
+#!/bin/bash
+nohup featureCounts -T 12 -s 2 -p -F GTF -a $HOME/datasets/arboba-rnaseq/refs/gencode.v31.chr_patch_hapl_scaff.annotation.gtf -o counts.txt *bam
+```
+- ``nohup`` permite executar o comando em segundo plano
 - ``-T`` número de threads utilizados para processar simultaneamente os processos da análise
-- ``-s`` realiza a contagem de acordo com a forma que as reads foram geradas (0: unstranded; 1: stranded; 2: stranded reverso)
-- ``-p`` os fragmentos serão contados ao invés das reads
+- ``-s`` realiza a contagem de acordo com a forma que as leituras foram geradas (0: unstranded; 1: stranded; 2: stranded reverso)
+- ``-p`` os fragmentos serão contados ao invés das leituras
 - ``-F`` formato do arquivo de anotação dos transcritos do genoma referência (GTF; SAF; GFF)
 - ``-a`` arquivo de anotação dos transcritos do genoma referência
-- ``-o`` nome do arquivo output com as contagem dos transcritos (delimitado por tabulação)
-- ``*bam`` seleciona as amostras para a contagem 
-- São gerados 2 outputs:
-    - counts.txt: contém a contagem dos transcritos de todas as amostras
-    - counts.txt.summary: contém um sumário da contagem dos transcritos de todas as amostras
+- ``-o`` nome do arquivo de saída com as contagem dos transcritos (delimitado por tabulação)
+- ``*bam`` seleciona as amostras para a contagem
+- `counts.txt` arquivo de saída com a contagem dos transcritos de todas as amostras
+- `counts.txt.summary` arquivo de saída com o sumário da contagem dos transcritos de todas as amostras
 ---
