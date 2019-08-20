@@ -10,14 +10,14 @@ Criar diretórios de trabalho no workstation
     ├── datasets
         └── arboba-rnaseq
             ├── align
-                ├── align-chikv_ctrl
-                ├── align-denv_ctrl
-                └── align-zikv_ctrl
+                ├── align-chikv
+                ├── align-denv
+                └── align-zikv
             ├── concatenated
             ├── counts
-                ├── counts-chikv_ctrl
-                ├── counts-denv_ctrl
-                └── counts-zikv_ctrl
+                ├── counts-chikv
+                ├── counts-denv
+                └── counts-zikv
             ├── index
             ├── qc
                 ├── qc-concatenated
@@ -39,14 +39,14 @@ Criar diretórios de trabalho no workstation
 - ``$HOME/datasets/`` datasets para análises
 - ``$HOME/datasets/arboba-rnaseq`` análise do "ArbovirusFiocruzBA"
 - ``$HOME/datasets/arboba-rnaseq/align`` leituras mapeadas com o genoma humano de referência GRCh38.p12
-- ``$HOME/datasets/arboba-rnaseq/align/align-chikv_ctrl`` leituras mapeadas de CHIKV vs. CONTROLES
-- ``$HOME/datasets/arboba-rnaseq/align/align-denv_ctrl`` leituras mapeadas de DENV vs. CONTROLES
-- ``$HOME/datasets/arboba-rnaseq/align/align-zikv_ctrl``leituras mapeadas de ZIKV vs. CONTROLES 
+- ``$HOME/datasets/arboba-rnaseq/align/align-chikv`` leituras mapeadas de CHIKV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/align/align-denv`` leituras mapeadas de DENV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/align/align-zikv``leituras mapeadas de ZIKV vs. CONTROLES 
 - ``$HOME/datasets/arboba-rnaseq/concatenated`` leituras concatenadas
 - ``$HOME/datasets/arboba-rnaseq/counts`` arquivos de contagem dos genes
-- ``$HOME/datasets/arboba-rnaseq/counts/counts-chikv_ctrl-`` arquivos de contagem dos genes de CHIKV vs. CONTROLES
-- ``$HOME/datasets/arboba-rnaseq/counts/counts-denv_ctrl`` arquivos de contagem dos genes de DENV vs. CONTROLES
-- ``$HOME/datasets/arboba-rnaseq/counts/counts-zikv_ctrl`` arquivos de contagem dos genes de ZIKV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/counts/counts-chikv`` arquivos de contagem dos genes de CHIKV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/counts/counts-denv`` arquivos de contagem dos genes de DENV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/counts/counts-zikv`` arquivos de contagem dos genes de ZIKV vs. CONTROLES
 - ``$HOME/datasets/arboba-rnaseq/index`` índices do genoma humano de referência GRCh38.p12
 - ``$HOME/datasets/arboba-rnaseq/qc`` dados de qualidade
 - ``$HOME/datasets/arboba-rnaseq/qc/qc-concatenated`` dados de qualidade das corridas concatenadas 
