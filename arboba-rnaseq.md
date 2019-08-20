@@ -12,9 +12,12 @@ Criar diretórios de trabalho no workstation
             ├── align
                 ├── align-chikv_ctrl
                 ├── align-denv_ctrl
-                ├── align-zikv_ctrl
+                └── align-zikv_ctrl
             ├── concatenated
             ├── counts
+                ├── counts-chikv_ctrl
+                ├── counts-denv_ctrl
+                └── counts-zikv_ctrl
             ├── index
             ├── qc
                 ├── qc-concatenated
@@ -33,30 +36,33 @@ Criar diretórios de trabalho no workstation
 └── softwares
         └── miniconda3
 ```
-- ``$HOME/datasets/`` diretório para alocar os datasets para análises
-- ``$HOME/datasets/arboba-rnaseq`` diretório de análise do "ArbovirusFiocruzBA"
-- ``$HOME/datasets/arboba-rnaseq/align`` diretório para as leituras mapeadas com o genoma humano de referência GRCh38.p12
-- ``$HOME/datasets/arboba-rnaseq/align/align-chikv_ctrl`` diretório com as leituras mapeadas para a análise CHIKV vs. CONTROLES
-- ``$HOME/datasets/arboba-rnaseq/align/align-denv_ctrl`` diretório com as leituras mapeadas para a análise DENV vs. CONTROLES
-- ``$HOME/datasets/arboba-rnaseq/align/align-zikv_ctrl``diretório com as leituras mapeadas para a análise ZIKV vs. CONTROLES 
-- ``$HOME/datasets/arboba-rnaseq/concatenated`` diretório para as leituras concatenadas
-- ``$HOME/datasets/arboba-rnaseq/counts`` 
-- ``$HOME/datasets/arboba-rnaseq/index`` diretório para os índices do genoma humano de referência GRCh38.p12
-- ``$HOME/datasets/arboba-rnaseq/qc`` diretório para dados de qualidade
-- ``$HOME/datasets/arboba-rnaseq/qc/qc-concatenated`` diretório para dados de qualidade das corridas concatenadas 
-- ``$HOME/datasets/arboba-rnaseq/qc/qc-run1`` diretório para dados de qualidade da corrida 1 do RNA-Seq
-- ``$HOME/datasets/arboba-rnaseq/qc/qc-run2`` diretório para dados de qualidade da corrida 2 do RNA-Seq
-- ``$HOME/datasets/arboba-rnaseq/qc/qc-run3`` diretório para dados de qualidade da corrida 3 do RNA-Seq
-- ``$HOME/datasets/arboba-rnaseq/qc/qc-run4`` diretório para dados de qualidade da corrida 4 do RNA-Seq
-- ``$HOME/datasets/arboba-rnaseq/qc/qc-run5`` diretório para dados de qualidade da corrida 5 do RNA-Seq
-- ``$HOME/datasets/arboba-rnaseq/refs`` diretório para os arquivos do genoma humano de referência GRCh38.p12
+- ``$HOME/datasets/`` datasets para análises
+- ``$HOME/datasets/arboba-rnaseq`` análise do "ArbovirusFiocruzBA"
+- ``$HOME/datasets/arboba-rnaseq/align`` leituras mapeadas com o genoma humano de referência GRCh38.p12
+- ``$HOME/datasets/arboba-rnaseq/align/align-chikv_ctrl`` leituras mapeadas de CHIKV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/align/align-denv_ctrl`` leituras mapeadas de DENV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/align/align-zikv_ctrl``leituras mapeadas de ZIKV vs. CONTROLES 
+- ``$HOME/datasets/arboba-rnaseq/concatenated`` leituras concatenadas
+- ``$HOME/datasets/arboba-rnaseq/counts`` arquivos de contagem dos genes
+- ``$HOME/datasets/arboba-rnaseq/counts/counts-chikv_ctrl-`` arquivos de contagem dos genes de CHIKV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/counts/counts-denv_ctrl`` arquivos de contagem dos genes de DENV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/counts/counts-zikv_ctrl`` arquivos de contagem dos genes de ZIKV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/index`` índices do genoma humano de referência GRCh38.p12
+- ``$HOME/datasets/arboba-rnaseq/qc`` dados de qualidade
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-concatenated`` dados de qualidade das corridas concatenadas 
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-run1`` dados de qualidade da corrida 1 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-run2`` dados de qualidade da corrida 2 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-run3`` dados de qualidade da corrida 3 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-run4`` dados de qualidade da corrida 4 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-run5`` dados de qualidade da corrida 5 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/refs`` arquivos do genoma humano de referência GRCh38.p12
 - ``$HOME/datasets/arboba-rnaseq/run1`` diretório temporário para a corrida 1 do RNA-Seq
 - ``$HOME/datasets/arboba-rnaseq/run2`` diretório temporário para a corrida 2 do RNA-Seq
 - ``$HOME/datasets/arboba-rnaseq/run3`` diretório temporário para a corrida 3 do RNA-Seq
 - ``$HOME/datasets/arboba-rnaseq/run4`` diretório temporário para a corrida 4 do RNA-Seq
 - ``$HOME/datasets/arboba-rnaseq/run5`` diretório temporário para a corrida 5 do RNA-Seq
-- ``$HOME/datasets/arboba-rnaseq/trimmed`` diretório para as leituras após filtragem de qualidade
-- ``$HOME/softwares/`` diretório para instalar aplicações
+- ``$HOME/datasets/arboba-rnaseq/trimmed`` leituras após filtragem de qualidade
+- ``$HOME/softwares/`` aplicações instaladas
 ---
 
 ### Criar ambiente de aplicações para análise de RNA-Seq
@@ -391,6 +397,8 @@ bash STAR_alignReads_SortedByCoordinated_cmd.sh
 <br/>
 
 Definir os desenhos experimentais
+- 
+<br/>
 | sample     | group   |
 | ---------- | ------- |
 | ZK0041_S23 | chikv   |
