@@ -1,77 +1,125 @@
-## RNA-Seq
+## RNA-Seq "ArbovirusFiocruzBA"
 
-### Criar um ambiente (environment) para a análise do RNA-Seq
+### Organizar as pastas de trabalho
+<br/>
+
+Criar diretórios de trabalho no workstation
+```
+.
+└── $HOME
+    ├── datasets
+        └── arboba-rnaseq
+            ├── concatenated
+            ├── counts
+            ├── index
+            ├── qc
+                ├── qc-concatenated
+                ├── qc-run1
+                ├── qc-run2
+                ├── qc-run3
+                ├── qc-run4
+                └── qc-run5
+            ├── refs
+            ├── run1
+            ├── run2
+            ├── run3
+            ├── run4
+            ├── run5
+            └── trimmed
+└── softwares
+        └── miniconda3
+
+```
+- ``$HOME/datasets/`` diretório para alocar os datasets para análises
+- ``$HOME/datasets/arboba-rnaseq`` diretório de análise do "ArbovirusFiocruzBA"
+- ``$HOME/datasets/arboba-rnaseq/concatenated`` 
+- ``$HOME/datasets/arboba-rnaseq/counts`` 
+- ``$HOME/datasets/arboba-rnaseq/index`` 
+- ``$HOME/datasets/arboba-rnaseq/qc`` diretório para dados de qualidade
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-concatenated`` diretório para dados de qualidade das corridas concatenadas 
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-run1`` diretório para dados de qualidade da corrida 1 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-run2`` diretório para dados de qualidade da corrida 2 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-run3`` diretório para dados de qualidade da corrida 3 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-run4`` diretório para dados de qualidade da corrida 4 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-run5`` diretório para dados de qualidade da corrida 5 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/refs`` 
+- ``$HOME/datasets/arboba-rnaseq/run1`` diretório temporário para a corrida 1 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/run2`` diretório temporário para a corrida 2 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/run3`` diretório temporário para a corrida 3 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/run4`` diretório temporário para a corrida 4 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/run5`` diretório temporário para a corrida 5 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/trimmed``
+- ``$HOME/softwares/`` diretório para instalar aplicações
+---
+
+### Criar ambiente de aplicações para análise de RNA-Seq
 <br/>
 
 Instalar última versão do *Miniconda*
 ```sh
-cd $HOME/softwares/
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-bash Miniconda3-latest-Linux-x86_64.sh
+curl https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o $HOME/softwares/miniconda3.sh
+bash $HOME/softwares/miniconda3.sh -bfp $HOME/softwares/miniconda3 && rm -rf $HOME/softwares/miniconda3.sh
 ```
 <br/>
 
-Criar environment rna-seq
+Criar ambiente nomeado "rna-seq"
 ```sh
-$HOME/softwares/miniconda3/bin/conda create --name rna-seq
+conda create --name rna-seq
 ```
-- ``create`` cria um environment para instalar uma lista específica de pacotes (packages)
-- ``--name`` nome do environment
+- ``create`` cria ambiente para instalar uma lista específica de pacotes (packages)
+- ``--name`` nome do ambiente
 <br/>
 
-Ativar enviroment rna-seq
+Ativar "rna-seq"
 ```sh
-source $HOME/softwares/miniconda3/bin/activate rna-seq
+source activate rna-seq
 ```
 <br/>
 
-Instalar aplicações no enviroment rna-seq
+Instalar aplicações no "rna-seq"
 ```sh
-conda install --name rna-seq --channel bioconda fastqc
-conda install --name rna-seq --channel bioconda multiqc
-conda install --name rna-seq --channel bioconda trimmomatic
-conda install --name rna-seq --channel bioconda star
-conda install --name rna-seq --channel bioconda subread
-conda install --name rna-seq --channel bioconda diamond
-conda install --name rna-seq --channel bioconda krona
+conda install --name rna-seq --channel bioconda fastqc multiqc trimmomatic star subread
 ```
 - ``install`` instala uma lista de pacotes
-- ``--name`` nome do environment
+- ``--name`` nome do ambiente
 - ``--channel`` canal do pacote a ser instalado (site para buscar pacotes: https://anaconda.org/search)
 <br/>
 
-Desativar environment rna-seq
+Desativar "rna-seq"
 ```sh
 conda deactivate
 ```
 ---
 
-### Organizar *raw data* no servidor
+### Organizar dados brutos do RNA-Seq
 <br/>
 
-Copiar os diretórios das 5 corridas (runs) para o servidor
-- Cada corrida tem 544 lanes totais, dispostas em diretório com 2 lanes de uma única amostra, cada lane contém leituras pareadas (paired-end) R1 e R2
+Copiar os diretórios das 5 corridas no workstation
+- Cada corrida tem 544 lanes totais, dispostas em diretório com 2 lanes de uma única amostra, cada lane contém leituras pareadas R1 e R2
 ```
 .
-└── ArbovirusFiocruzBA-83677594 (n=2720)
-    ├── FASTQ_Generation_2018-08-17_15_33_27Z-116577544 (n=544)
-            └── 1_1_L001-ds.901a0121cf82438fb90c16ce58350a12 (n=2)
-                    ├── 193_S11_L001_R1_001.fastq.gz
-                    └── 193_S11_L001_R2_001.fastq.gz
-    ├── FASTQ_Generation_2018-10-17_13_51_20Z-130391988
-    ├── FASTQ_Generation_2018-12-11_13_17_10Z-141945716
-    ├── FASTQ_Generation_2018-12-13_14_45_41Z-143225097
-    └── FASTQ_Generation_2018-12-15_10_26_29Z-143716575
+└── $HOME
+    └── datasets
+        └── arboba-rnaseq
+            └── ArbovirusFiocruzBA-83677594 (n=2720)
+                ├── FASTQ_Generation_2018-08-17_15_33_27Z-116577544 (n=544)
+                        └── 1_1_L001-ds.901a0121cf82438fb90c16ce58350a12 (n=2)
+                            ├── 193_S11_L001_R1_001.fastq.gz
+                            └── 193_S11_L001_R2_001.fastq.gz
+                ├── FASTQ_Generation_2018-10-17_13_51_20Z-130391988
+                ├── FASTQ_Generation_2018-12-11_13_17_10Z-141945716
+                ├── FASTQ_Generation_2018-12-13_14_45_41Z-143225097
+                └── FASTQ_Generation_2018-12-15_10_26_29Z-143716575
 ```
 <br/>
 
-Organizar as lanes em um diretório por corrida (run1, run2, run3, run4, run5)
+Copiar as lanes dipostas em um diretório por corrida (run1, run2, run3, run4, run5)
 ```sh
-mkdir $HOME/datasets/arboba-rnaseq/arboba-run1 | find $HOME/datasets/arboba-rnaseq/FASTQ_Generation_2018-08-17_15_33_27Z-116577544/ -type f -name '*.fastq.gz' -exec cp -at $HOME/datasets/arboba-rnaseq/arboba-run1/ {} +
-mkdir $HOME/datasets/arboba-rnaseq/arboba-run2 | find $HOME/datasets/arboba-rnaseq/FASTQ_Generation_2018-10-17_13_51_20Z-130391988/ -type f -name '*.fastq.gz' -exec cp -at $HOME/datasets/arboba-rnaseq/arboba-run2/ {} +
-mkdir $HOME/datasets/arboba-rnaseq/arboba-run3 | find $HOME/datasets/arboba-rnaseq/FASTQ_Generation_2018-12-11_13_17_10Z-141945716/ -type f -name '*.fastq.gz' -exec cp -at $HOME/datasets/arboba-rnaseq/arboba-run3/ {} +
-mkdir $HOME/datasets/arboba-rnaseq/arboba-run4 | find $HOME/datasets/arboba-rnaseq/FASTQ_Generation_2018-12-13_14_45_41Z-143225097/ -type f -name '*.fastq.gz' -exec cp -at $HOME/datasets/arboba-rnaseq/arboba-run4/ {} +
-mkdir $HOME/datasets/arboba-rnaseq/arboba-run5 | find $HOME/datasets/arboba-rnaseq/FASTQ_Generation_2018-12-15_10_26_29Z-143716575/ -type f -name '*.fastq.gz' -exec cp -at $HOME/datasets/arboba-rnaseq/arboba-run5/ {} +
+find $HOME/datasets/arboba-rnaseq/FASTQ_Generation_2018-08-17_15_33_27Z-116577544/ -type f -name '*.fastq.gz' -exec cp -at $HOME/datasets/arboba-rnaseq/run1/ {} +
+find $HOME/datasets/arboba-rnaseq/FASTQ_Generation_2018-10-17_13_51_20Z-130391988/ -type f -name '*.fastq.gz' -exec cp -at $HOME/datasets/arboba-rnaseq/run2/ {} +
+find $HOME/datasets/arboba-rnaseq/FASTQ_Generation_2018-12-11_13_17_10Z-141945716/ -type f -name '*.fastq.gz' -exec cp -at $HOME/datasets/arboba-rnaseq/run3/ {} +
+find $HOME/datasets/arboba-rnaseq/FASTQ_Generation_2018-12-13_14_45_41Z-143225097/ -type f -name '*.fastq.gz' -exec cp -at $HOME/datasets/arboba-rnaseq/run4/ {} +
+find $HOME/datasets/arboba-rnaseq/FASTQ_Generation_2018-12-15_10_26_29Z-143716575/ -type f -name '*.fastq.gz' -exec cp -at $HOME/datasets/arboba-rnaseq/run5/ {} +
 ```
 <br/>
 
@@ -81,16 +129,17 @@ find $HOME/datasets/arboba-rnaseq/ -name 'FASTQ*' -exec rm -rf {} \;
 ```
 ---
 
-### Organizar as leituras por corrida
+### Organizar as lanes por corrida (run1, run2, run3, run4, run5)
 <br/>
 
-Concatenar as lanes por corrida (run1, run2, run3, run4, run5)
+Concatenar as lanes
+- script: [cat_lane_merging.sh](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/cat_lane_merging.sh)
 ```sh
 #!/bin/bash
 for i in $(find ./ -type f -name "*.fastq.gz" | while read F; do basename $F | rev | cut -c 22- | rev; done | sort | uniq)
-    do echo "sample $i R1 concatenated"
+do echo "sample $i R1 concatenated"
 cat "$i"_L00*_R1_001.fastq.gz > "$i"_RUN0_R1_001.fastq.gz
-    echo "sample $i R2 concatenated"
+echo "sample $i R2 concatenated"
 cat "$i"_L00*_R2_001.fastq.gz > "$i"_RUN0_R2_001.fastq.gz
 done
 ```
@@ -102,56 +151,40 @@ find $HOME/datasets/arboba-rnaseq/ -type f -name '*L00*' -exec rm -rf {} \;
 ```
 ---
 
-### Checagem de qualidade (basecalling) por corrida
+### Checar qualidade das corridas
 <br/>
 
-Criar diretórios para os resultados do basecalling
+Realizar análise de qualidade utilizando a ferramenta *fastQC*
+- script: [fastqc_runs.sh](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/fastqc_runs.sh)
 ```sh
-mkdir $HOME/datasets/arboba-rnaseq/arboba-run1-fastQC/ && mkdir $HOME/datasets/arboba-rnaseq/arboba-run2-fastQC/ && mkdir $HOME/datasets/arboba-rnaseq/arboba-run3-fastQC/ && mkdir $HOME/datasets/arboba-rnaseq/arboba-run4-fastQC/ && mkdir $HOME/datasets/arboba-rnaseq/arboba-run5-fastQC/
+#!/bin/bash
+nohup fastqc $HOME/datasets/arboba-rnaseq/run1/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-run1/ --threads 12
+nohup fastqc $HOME/datasets/arboba-rnaseq/run2/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-run2/ --threads 12
+nohup fastqc $HOME/datasets/arboba-rnaseq/run3/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-run3/ --threads 12
+nohup fastqc $HOME/datasets/arboba-rnaseq/run4/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-run4/ --threads 12
+nohup fastqc $HOME/datasets/arboba-rnaseq/run5/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-run5/ --threads 12
 ```
-<br/>
-
-Realizar basecalling utilizando a ferramenta *fastQC*
-```sh
-cd $HOME/datasets/arboba-rnaseq/arboba-run1/
-nohup fastqc *.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/arboba-run1-fastQC/ --threads 12
-cd $HOME/datasets/arboba-rnaseq/arboba-run2/
-nohup fastqc *.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/arboba-run2-fastQC/ --threads 12
-cd $HOME/datasets/arboba-rnaseq/arboba-run3/
-nohup fastqc *.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/arboba-run3-fastQC/ --threads 12
-cd $HOME/datasets/arboba-rnaseq/arboba-run4/
-nohup fastqc *.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/arboba-run4-fastQC/ --threads 12
-cd $HOME/datasets/arboba-rnaseq/arboba-run5/
-nohup fastqc *.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/arboba-run5-fastQC/ --threads 12
-```
+- ``nohup``: permite executar o comando em segundo plano
 - ``*.fastq.gz``: seleciona os arquivos *.fastq.gz para a análise
 - ``--outdir`` diretório para os arquivos de saída da análise (output)
 - ``--threads`` número de threads utilizados para processar simultaneamente os processos da análise
 <br/>
 
-Agregar resultados do basecalling utilizando a ferramenta *multiQC*
+Agregar resultados de qualidade utilizando a ferramenta *multiQC*
+- script: [multiqc_runs.sh](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/multiqc_runs.sh)
 ```sh
-cd $HOME/datasets/arboba-rnaseq/arboba-run1-fastQC/
-nohup multiqc --fullnames --title ArbovirusBahiaRun1 --interactive --export $HOME/datasets/arboba-rnaseq/arboba-run1-fastQC/
-cd $HOME/datasets/arboba-rnaseq/arboba-run2-fastQC/
-nohup multiqc --fullnames --title ArbovirusBahiaRun2 --interactive --export $HOME/datasets/arboba-rnaseq/arboba-run2-fastQC/
-cd $HOME/datasets/arboba-rnaseq/arboba-run3-fastQC/
-nohup multiqc --fullnames --title ArbovirusBahiaRun3 --interactive --export $HOME/datasets/arboba-rnaseq/arboba-run3-fastQC/
-cd $HOME/datasets/arboba-rnaseq/arboba-run4-fastQC/
-nohup multiqc --fullnames --title ArbovirusBahiaRun4 --interactive --export $HOME/datasets/arboba-rnaseq/arboba-run4-fastQC/
-cd $HOME/datasets/arboba-rnaseq/arboba-run5-fastQC/
-nohup multiqc --fullnames --title ArbovirusBahiaRun5 --interactive --export $HOME/datasets/arboba-rnaseq/arboba-run5-fastQC/
+#!/bin/bash
+cd $HOME/datasets/arboba-rnaseq/qc/qc-run1/ && nohup multiqc --fullnames --title ArbovirusBahiaRun1 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-run1/
+cd $HOME/datasets/arboba-rnaseq/qc/qc-run2/ && nohup multiqc --fullnames --title ArbovirusBahiaRun2 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-run2/
+cd $HOME/datasets/arboba-rnaseq/qc/qc-run3/ && nohup multiqc --fullnames --title ArbovirusBahiaRun3 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-run3/
+cd $HOME/datasets/arboba-rnaseq/qc/qc-run4/ && nohup multiqc --fullnames --title ArbovirusBahiaRun4 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-run4/
+cd $HOME/datasets/arboba-rnaseq/qc/qc-run5/ && nohup multiqc --fullnames --title ArbovirusBahiaRun5 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-run5/
 ```
+- ``nohup``: permite executar o comando em segundo plano
 - ``--fullnames`` mantém o nome do arquivo que vai ser analisado
 - ``--title`` cria um título para o relatório do multiqc
 - ``--interactive`` utiliza plots iterativos
 - ``--export`` exporta plots das análises do multiqc
-<br/>
-
-Excluir os diretórios do basecalling (etapa após backup)
-```sh
-find $HOME/datasets/arboba-rnaseq/ -name '*fastQC*' -exec rm -rf {} \;
-```
 ---
 
 ### Organizar as leituras como um único experimento
@@ -159,68 +192,61 @@ find $HOME/datasets/arboba-rnaseq/ -name '*fastQC*' -exec rm -rf {} \;
 
 Organizar as leituras das corrida em um único diretório
 ```sh
-find ./ -type f -name '*.fastq.gz' -exec cp -at $HOME/datasets/arboba-rnaseq/ {} +
+find ./ -type f -name '*.fastq.gz' -exec cp -at $HOME/datasets/arboba-rnaseq/concatenated {} +
 ```
 <br/>
 
 Excluir os diretórios de cada corrida
 ```sh
-find $HOME/datasets/arboba-rnaseq/ -name '*arboba-run*' -exec rm -rf {} \;
+find $HOME/datasets/arboba-rnaseq/ -name 'run*' -exec rm -rf {} \;
 ```
 <br/>
 
 Concatenar as corridas
+- script: [cat_runs_merging.sh](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/cat_runs_merging.sh)
 ```sh
 #!/bin/bash
 for i in $(find ./ -type f -name "*.fastq.gz" | while read F; do basename $F | rev | cut -c 22- | rev; done | sort | uniq)
-    do echo "sample $i R1 concatenated"
+do echo "sample $i R1 concatenated"
 cat "$i"_RUN*_R1_001.fastq.gz > "$i"_R1.fastq.gz
-    echo "sample $i R2 concatenated"
+echo "sample $i R2 concatenated"
 cat "$i"_RUN*_R2_001.fastq.gz > "$i"_R2.fastq.gz
 done
 ```
 <br/>
 
-Excluir as corridas não concatenadas do diretório
+Excluir as corridas não concatenadas
 ```sh
-find $HOME/datasets/arboba-rnaseq/ -type f -name '*RUN*' -exec rm -rf {} \;
+find $HOME/datasets/arboba-rnaseq/concatenated -type f -name '*RUN*' -exec rm -rf {} \;
 ```
 ---
 
-### Checagem de qualidade (basecalling) do experimento
+### Checar qualidade do experimento
 <br/>
 
-Criar diretório para os resultados do basecalling
+Realizar análise de qualidade utilizando a ferramenta *fastQC*
+- script: [fastqc_concatenated.sh](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/fastqc_concatenated.sh)
 ```sh
-mkdir $HOME/datasets/arboba-rnaseq-fastQC/
+#!/bin/bash
+nohup fastqc $HOME/datasets/arboba-rnaseq/concatenated*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-concatenated/ --threads 12
 ```
-<br/>
-
-Realizar basecalling utilizando a ferramenta *fastQC*
-```sh
-cd $HOME/datasets/arboba-rnaseq/
-nohup fastqc *.fastq.gz --outdir $HOME/datasets/arboba-rnaseq-fastQC/ --threads 12
-```
+- ``nohup``: permite executar o comando em segundo plano
 - ``*.fastq.gz``: seleciona os arquivos *.fastq.gz para a análise
 - ``--outdir`` diretório para os arquivos de saída da análise (output)
 - ``--threads`` número de threads utilizados para processar simultaneamente os processos da análise
 <br/>
 
-Agregar resultados do basecalling utilizando a ferramenta *multiQC*
+Agregar resultados de qualidade utilizando a ferramenta *multiQC*
+- script: [multiqc_concatenated.sh](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/multiqc_concatenated.sh)
 ```sh
-cd $HOME/datasets/arboba-rnaseq-fastQC/
-nohup multiqc --fullnames --title ArbovirusBahiaRNASeq --interactive --export $HOME/datasets/arboba-rnaseq-fastQC/
+#!/bin/bash
+cd $HOME/datasets/arboba-rnaseq/qc/qc-concatenated/ && nohup multiqc --fullnames --title ArbovirusBahiaRNASeq --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-concatenated/
 ```
+- ``nohup``: permite executar o comando em segundo plano
 - ``--fullnames`` mantém o nome do arquivo que vai ser analisado
 - ``--title`` cria um título para o relatório do multiqc
 - ``--interactive`` utiliza plots iterativos
 - ``--export`` exporta plots das análises do multiqc
-<br/>
-
-Excluir o diretório do basecalling (etapa após backup)
-```sh
-find $HOME/datasets/ -name '*fastQC*' -exec rm -rf {} \;
-```
 ---
 
 ### Filtrar e cortar as leituras de baixa qualidade
