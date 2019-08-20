@@ -10,22 +10,22 @@ Criar diretórios de trabalho no workstation
     ├── datasets
         └── arboba-rnaseq
             ├── align
-                ├── align-chikv
-                ├── align-denv
-                └── align-zikv
+                ├── align-c
+                ├── align-d
+                └── align-z
             ├── concatenated
             ├── counts
-                ├── counts-chikv
-                ├── counts-denv
-                └── counts-zikv
+                ├── counts-c
+                ├── counts-d
+                └── counts-z
             ├── index
             ├── qc
                 ├── qc-concatenated
-                ├── qc-run1
-                ├── qc-run2
-                ├── qc-run3
-                ├── qc-run4
-                └── qc-run5
+                ├── qc-r1
+                ├── qc-r2
+                ├── qc-r3
+                ├── qc-r4
+                └── qc-r5
             ├── refs
             ├── run1
             ├── run2
@@ -39,22 +39,22 @@ Criar diretórios de trabalho no workstation
 - ``$HOME/datasets/`` datasets para análises
 - ``$HOME/datasets/arboba-rnaseq`` análise do "ArbovirusFiocruzBA"
 - ``$HOME/datasets/arboba-rnaseq/align`` leituras mapeadas com o genoma humano de referência GRCh38.p12
-- ``$HOME/datasets/arboba-rnaseq/align/align-chikv`` leituras mapeadas de CHIKV vs. CONTROLES
-- ``$HOME/datasets/arboba-rnaseq/align/align-denv`` leituras mapeadas de DENV vs. CONTROLES
-- ``$HOME/datasets/arboba-rnaseq/align/align-zikv``leituras mapeadas de ZIKV vs. CONTROLES 
+- ``$HOME/datasets/arboba-rnaseq/align/align-c`` leituras mapeadas de CHIKV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/align/align-d`` leituras mapeadas de DENV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/align/align-z``leituras mapeadas de ZIKV vs. CONTROLES 
 - ``$HOME/datasets/arboba-rnaseq/concatenated`` leituras concatenadas
 - ``$HOME/datasets/arboba-rnaseq/counts`` contagem dos genes
-- ``$HOME/datasets/arboba-rnaseq/counts/counts-chikv`` contagem dos genes de CHIKV vs. CONTROLES
-- ``$HOME/datasets/arboba-rnaseq/counts/counts-denv`` contagem dos genes de DENV vs. CONTROLES
-- ``$HOME/datasets/arboba-rnaseq/counts/counts-zikv`` contagem dos genes de ZIKV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/counts/counts-c`` contagem dos genes de CHIKV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/counts/counts-d`` contagem dos genes de DENV vs. CONTROLES
+- ``$HOME/datasets/arboba-rnaseq/counts/counts-z`` contagem dos genes de ZIKV vs. CONTROLES
 - ``$HOME/datasets/arboba-rnaseq/index`` índices do genoma humano de referência GRCh38.p12
 - ``$HOME/datasets/arboba-rnaseq/qc`` dados de qualidade
 - ``$HOME/datasets/arboba-rnaseq/qc/qc-concatenated`` dados de qualidade das corridas concatenadas 
-- ``$HOME/datasets/arboba-rnaseq/qc/qc-run1`` dados de qualidade da corrida 1 do RNA-Seq
-- ``$HOME/datasets/arboba-rnaseq/qc/qc-run2`` dados de qualidade da corrida 2 do RNA-Seq
-- ``$HOME/datasets/arboba-rnaseq/qc/qc-run3`` dados de qualidade da corrida 3 do RNA-Seq
-- ``$HOME/datasets/arboba-rnaseq/qc/qc-run4`` dados de qualidade da corrida 4 do RNA-Seq
-- ``$HOME/datasets/arboba-rnaseq/qc/qc-run5`` dados de qualidade da corrida 5 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-r1`` dados de qualidade da corrida 1 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-r2`` dados de qualidade da corrida 2 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-r3`` dados de qualidade da corrida 3 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-r4`` dados de qualidade da corrida 4 do RNA-Seq
+- ``$HOME/datasets/arboba-rnaseq/qc/qc-r5`` dados de qualidade da corrida 5 do RNA-Seq
 - ``$HOME/datasets/arboba-rnaseq/refs`` arquivos do genoma humano de referência GRCh38.p12
 - ``$HOME/datasets/arboba-rnaseq/run1`` diretório temporário para a corrida 1 do RNA-Seq
 - ``$HOME/datasets/arboba-rnaseq/run2`` diretório temporário para a corrida 2 do RNA-Seq
@@ -172,11 +172,11 @@ Realizar análise de qualidade utilizando a ferramenta *fastQC*
 - script: [fastqc_runs.sh](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/fastqc_runs.sh)
 ```sh
 #!/bin/bash
-nohup fastqc $HOME/datasets/arboba-rnaseq/run1/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-run1/ --threads 12
-nohup fastqc $HOME/datasets/arboba-rnaseq/run2/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-run2/ --threads 12
-nohup fastqc $HOME/datasets/arboba-rnaseq/run3/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-run3/ --threads 12
-nohup fastqc $HOME/datasets/arboba-rnaseq/run4/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-run4/ --threads 12
-nohup fastqc $HOME/datasets/arboba-rnaseq/run5/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-run5/ --threads 12
+nohup fastqc $HOME/datasets/arboba-rnaseq/run1/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-r1/ --threads 12
+nohup fastqc $HOME/datasets/arboba-rnaseq/run2/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-r2/ --threads 12
+nohup fastqc $HOME/datasets/arboba-rnaseq/run3/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-r3/ --threads 12
+nohup fastqc $HOME/datasets/arboba-rnaseq/run4/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-r4/ --threads 12
+nohup fastqc $HOME/datasets/arboba-rnaseq/run5/*.fastq.gz --outdir $HOME/datasets/arboba-rnaseq/qc/qc-r5/ --threads 12
 ```
 - ``nohup`` permite executar o comando em segundo plano
 - ``*.fastq.gz`` seleciona os arquivos *.fastq.gz para a análise
@@ -188,11 +188,11 @@ Agregar resultados de qualidade utilizando a ferramenta *multiQC*
 - script: [multiqc_runs.sh](https://github.com/lpmor22/docs/blob/master/scripts/arboba-rnaseq/multiqc_runs.sh)
 ```sh
 #!/bin/bash
-cd $HOME/datasets/arboba-rnaseq/qc/qc-run1/ && nohup multiqc --fullnames --title ArbovirusBahiaRun1 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-run1/
-cd $HOME/datasets/arboba-rnaseq/qc/qc-run2/ && nohup multiqc --fullnames --title ArbovirusBahiaRun2 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-run2/
-cd $HOME/datasets/arboba-rnaseq/qc/qc-run3/ && nohup multiqc --fullnames --title ArbovirusBahiaRun3 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-run3/
-cd $HOME/datasets/arboba-rnaseq/qc/qc-run4/ && nohup multiqc --fullnames --title ArbovirusBahiaRun4 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-run4/
-cd $HOME/datasets/arboba-rnaseq/qc/qc-run5/ && nohup multiqc --fullnames --title ArbovirusBahiaRun5 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-run5/
+cd $HOME/datasets/arboba-rnaseq/qc/qc-r1/ && nohup multiqc --fullnames --title ArbovirusBahiaRun1 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-r1/
+cd $HOME/datasets/arboba-rnaseq/qc/qc-r2/ && nohup multiqc --fullnames --title ArbovirusBahiaRun2 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-r2/
+cd $HOME/datasets/arboba-rnaseq/qc/qc-r3/ && nohup multiqc --fullnames --title ArbovirusBahiaRun3 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-r3/
+cd $HOME/datasets/arboba-rnaseq/qc/qc-r4/ && nohup multiqc --fullnames --title ArbovirusBahiaRun4 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-r4/
+cd $HOME/datasets/arboba-rnaseq/qc/qc-r5/ && nohup multiqc --fullnames --title ArbovirusBahiaRun5 --interactive --export $HOME/datasets/arboba-rnaseq/qc/qc-r5/
 ```
 - ``nohup`` permite executar o comando em segundo plano
 - ``--fullnames`` mantém o nome do arquivo que vai ser analisado
@@ -398,100 +398,40 @@ bash STAR_alignReads_SortedByCoordinated_cmd.sh
 
 Definir os desenhos experimentais
 
-| sample     | group   |
-| ---------- | ------- |
-| ZK0041_S23 | chikv   |
-| ZK0043_S65 | chikv   |
-| ZK0046_S2  | chikv   |
-| ZK0048_S32 | chikv   |
-| ZK0049_S34 | chikv   |
-| ZK0066_S1  | chikv   |
-| ZK0085_S31 | chikv   |
-| ZK0087_S16 | chikv   |
-| ZK0088_S30 | chikv   |
-| ZK0094_S52 | chikv   |
-| ZK0104_S27 | chikv   |
-| ZK0126_S19 | chikv   |
-| ZK0129_S63 | chikv   |
-| ZK0130_S22 | chikv   |
-| ZK0134_S15 | chikv   |
-| ZK0135_S3  | chikv   |
-| ZK0137_S60 | chikv   |
-| ZK0140_S43 | chikv   |
-| ZK0143_S21 | chikv   |
-| ZK0145_S12 | chikv   |
-| ZK0160_S10 | chikv   |
-| ZK0162_S29 | chikv   |
-| ZK0170_S68 | chikv   |
-| ZK0171_S46 | chikv   |
-| ZK0172_S7  | chikv   |
-| ZK0180_S6  | chikv   |
-| ZK0182_S41 | chikv   |
-| ZK0185_S54 | chikv   |
-| ZK0187_S55 | chikv   |
-| ZK0188_S26 | chikv   |
-| ZK0191_S45 | chikv   |
-| ZK0193_S17 | chikv   |
-| ZK0194_S67 | chikv   |
-| ZK0195_S28 | chikv   |
-| ZK0196_S59 | chikv   |
-| ZK0198_S44 | chikv   |
-| ZK0202_S14 | chikv   |
-| ZK0214_S9  | control |
-| ZK0215_S58 | control |
-| ZK0219_S24 | control |
-| ZK0361_S51 | control |
-| ZK0362_S50 | control |
-| ZK0363_S25 | control |
-| ZK0364_S13 | control |
-| ZK0365_S39 | control |
-| ZK0366_S40 | control |
+| amostras | grupo | total |
+| --- | --- | --- |
+| ZK0041_S23, ZK0043_S65, ZK0046_S2, ZK0048_S32, ZK0049_S34, ZK0066_S1, ZK0085_S31, ZK0087_S16, ZK0088_S30, ZK0094_S52, ZK0104_S27, ZK0126_S19, ZK0129_S63, ZK0130_S22, ZK0134_S15, ZK0135_S3, ZK0137_S60, ZK0140_S43, ZK0143_S21, ZK0145_S12, ZK0160_S10, ZK0162_S29, ZK0170_S68, ZK0171_S46, ZK0172_S7, ZK0180_S6, ZK0182_S41, ZK0185_S54, ZK0187_S55, ZK0188_S26, ZK0191_S45, ZK0193_S17, ZK0194_S67, ZK0195_S28, ZK0196_S59, ZK0198_S44, ZK0202_S14 | chikv | 37 |
+| ZK0214_S9, ZK0215_S58, ZK0219_S24, ZK0361_S51, ZK0362_S50, ZK0363_S25, ZK0364_S13, ZK0365_S39, ZK0366_S40 | controle | 9 |
 <br/>
 
-| sample     | group   |
-| ---------- | ------- |
-| 2137_S38   | denv    |
-| 2167_S48   | denv    |
-| 2173_S42   | denv    |
-| 3051_S66   | denv    |
-| 3053_S47   | denv    |
-| 4171_S57   | denv    |
-| 4175_S37   | denv    |
-| 4230_S5    | denv    |
-| ZK0214_S9  | control |
-| ZK0215_S58 | control |
-| ZK0219_S24 | control |
-| ZK0361_S51 | control |
-| ZK0362_S50 | control |
-| ZK0363_S25 | control |
-| ZK0364_S13 | control |
-| ZK0365_S39 | control |
-| ZK0366_S40 | control |
+| amostras | grupo | total |
+| --- | --- | --- |
+| 2137_S38, 2167_S48, 2173_S42, 3051_S66, 3053_S47, 4171_S57, 4175_S37, 4230_S5 | denvv | 8 |
+| ZK0214_S9, ZK0215_S58, ZK0219_S24, ZK0361_S51, ZK0362_S50, ZK0363_S25, ZK0364_S13, ZK0365_S39, ZK0366_S40 | controle | 9 |
 <br/>
 
-| sample     | group   |
-| ---------- | ------- |
-| 140_S33    | zikv    |
-| 193_S11    | zikv    |
-| 200_S18    | zikv    |
-| 210_S62    | zikv    |
-| 225_S20    | zikv    |
-| 227_S49    | zikv    |
-| 241_S53    | zikv    |
-| 39_S35     | zikv    |
-| ZK0099_S64 | zikv    |
-| ZK0110_S8  | zikv    |
-| ZK0111_S61 | zikv    |
-| ZK0128_S36 | zikv    |
-| ZK0214_S9  | control |
-| ZK0215_S58 | control |
-| ZK0219_S24 | control |
-| ZK0361_S51 | control |
-| ZK0362_S50 | control |
-| ZK0363_S25 | control |
-| ZK0364_S13 | control |
-| ZK0365_S39 | control |
-| ZK0366_S40 | control |
+| amostras | grupo | total |
+| --- | --- | --- |
+| 140_S33, 193_S11, 200_S18, 210_S62, 225_S20, 227_S49, 241_S53, 39_S35, ZK0099_S64, ZK0110_S8, ZK0111_S61, ZK0128_S36 | zikv | 12 |
+| ZK0214_S9, ZK0215_S58, ZK0219_S24, ZK0361_S51, ZK0362_S50, ZK0363_S25, ZK0364_S13, ZK0365_S39, ZK0366_S40 | controle | 9 |
+<br/>
+
+| amostras | grupo | total |
+| --- | --- | --- |
+| ZK0041_S23, ZK0043_S65, ZK0046_S2, ZK0048_S32, ZK0049_S34, ZK0066_S1, ZK0085_S31, ZK0087_S16, ZK0088_S30, ZK0094_S52, ZK0104_S27, ZK0126_S19, ZK0129_S63, ZK0130_S22, ZK0134_S15, ZK0135_S3, ZK0137_S60, ZK0140_S43, ZK0143_S21, ZK0145_S12, ZK0160_S10, ZK0162_S29, ZK0170_S68, ZK0171_S46, ZK0172_S7, ZK0180_S6, ZK0182_S41, ZK0185_S54, ZK0187_S55, ZK0188_S26, ZK0191_S45, ZK0193_S17, ZK0194_S67, ZK0195_S28, ZK0196_S59, ZK0198_S44, ZK0202_S14 | chikv | 37 |
+| 2137_S38, 2167_S48, 2173_S42, 3051_S66, 3053_S47, 4171_S57, 4175_S37, 4230_S5 | denvv | 8 |
+<br/>
+
+| amostras | grupo | total |
+| --- | --- | --- |
+| ZK0041_S23, ZK0043_S65, ZK0046_S2, ZK0048_S32, ZK0049_S34, ZK0066_S1, ZK0085_S31, ZK0087_S16, ZK0088_S30, ZK0094_S52, ZK0104_S27, ZK0126_S19, ZK0129_S63, ZK0130_S22, ZK0134_S15, ZK0135_S3, ZK0137_S60, ZK0140_S43, ZK0143_S21, ZK0145_S12, ZK0160_S10, ZK0162_S29, ZK0170_S68, ZK0171_S46, ZK0172_S7, ZK0180_S6, ZK0182_S41, ZK0185_S54, ZK0187_S55, ZK0188_S26, ZK0191_S45, ZK0193_S17, ZK0194_S67, ZK0195_S28, ZK0196_S59, ZK0198_S44, ZK0202_S14 | chikv | 37 |
+| 140_S33, 193_S11, 200_S18, 210_S62, 225_S20, 227_S49, 241_S53, 39_S35, ZK0099_S64, ZK0110_S8, ZK0111_S61, ZK0128_S36 | zikv | 12 |
+<br/>
+
+| amostras | grupo | total |
+| --- | --- | --- |
+| 2137_S38, 2167_S48, 2173_S42, 3051_S66, 3053_S47, 4171_S57, 4175_S37, 4230_S5 | denvv | 8 |
+| 140_S33, 193_S11, 200_S18, 210_S62, 225_S20, 227_S49, 241_S53, 39_S35, ZK0099_S64, ZK0110_S8, ZK0111_S61, ZK0128_S36 | zikv | 12 |
 <br/>
 
 Organizar as leituras mapeadas de acordo com o desenho experimental
@@ -499,17 +439,29 @@ Organizar as leituras mapeadas de acordo com o desenho experimental
 ```sh
 #!/bin/bash
 #chikv versus controles
-mv ZK0041_S23* ZK0043_S65* ZK0046_S2* ZK0048_S32* ZK0049_S34* ZK0066_S1* ZK0085_S31* ZK0087_S16* ZK0088_S30* ZK0094_S52* ZK0104_S27* ZK0126_S19* ZK0129_S63* ZK0130_S22* ZK0134_S15* ZK0135_S3* ZK0137_S60* ZK0140_S43* ZK0143_S21* ZK0145_S12* ZK0160_S10* ZK0162_S29* ZK0170_S68* ZK0171_S46* ZK0172_S7* ZK0180_S6* ZK0182_S41* ZK0185_S54* ZK0187_S55* ZK0188_S26* ZK0191_S45* ZK0193_S17* ZK0194_S67* ZK0195_S28* ZK0196_S59* ZK0198_S44* ZK0202_S14* \
+cp --recursive ZK0041_S23* ZK0043_S65* ZK0046_S2* ZK0048_S32* ZK0049_S34* ZK0066_S1* ZK0085_S31* ZK0087_S16* ZK0088_S30* ZK0094_S52* ZK0104_S27* ZK0126_S19* ZK0129_S63* ZK0130_S22* ZK0134_S15* ZK0135_S3* ZK0137_S60* ZK0140_S43* ZK0143_S21* ZK0145_S12* ZK0160_S10* ZK0162_S29* ZK0170_S68* ZK0171_S46* ZK0172_S7* ZK0180_S6* ZK0182_S41* ZK0185_S54* ZK0187_S55* ZK0188_S26* ZK0191_S45* ZK0193_S17* ZK0194_S67* ZK0195_S28* ZK0196_S59* ZK0198_S44* ZK0202_S14* \
 ZK0214_S9* ZK0215_S58* ZK0219_S24* ZK0361_S51* ZK0362_S50* ZK0363_S25* ZK0364_S13* ZK0365_S39* ZK0366_S40* \
-$HOME/datasets/arboba-rnaseq/align/align-chikv/
+$HOME/datasets/arboba-rnaseq/align/align-c/
 #denv versus controles
-mv 2137_S38* 2167_S48* 2173_S42* 3051_S66* 3053_S47* 4171_S57* 4175_S37* 4230_S5* \
+cp --recursive 2137_S38* 2167_S48* 2173_S42* 3051_S66* 3053_S47* 4171_S57* 4175_S37* 4230_S5* \
 ZK0214_S9* ZK0215_S58* ZK0219_S24* ZK0361_S51* ZK0362_S50* ZK0363_S25* ZK0364_S13* ZK0365_S39* ZK0366_S40* \
-$HOME/datasets/arboba-rnaseq/align/align-denv/
+$HOME/datasets/arboba-rnaseq/align/align-d/
 #zikv versus controles
-mv 140_S33* 193_S11* 200_S18* 210_S62* 225_S20* 227_S49* 241_S53* 39_S35* ZK0099_S64* ZK0110_S8* ZK0111_S61* ZK0128_S36* \
+cp --recursive 140_S33* 193_S11* 200_S18* 210_S62* 225_S20* 227_S49* 241_S53* 39_S35* ZK0099_S64* ZK0110_S8* ZK0111_S61* ZK0128_S36* \
 ZK0214_S9* ZK0215_S58* ZK0219_S24* ZK0361_S51* ZK0362_S50* ZK0363_S25* ZK0364_S13* ZK0365_S39* ZK0366_S40* \
-$HOME/datasets/arboba-rnaseq/align/align-zikv/
+$HOME/datasets/arboba-rnaseq/align/align-z/
+#chikv versus denv
+cp --recursive ZK0041_S23* ZK0043_S65* ZK0046_S2* ZK0048_S32* ZK0049_S34* ZK0066_S1* ZK0085_S31* ZK0087_S16* ZK0088_S30* ZK0094_S52* ZK0104_S27* ZK0126_S19* ZK0129_S63* ZK0130_S22* ZK0134_S15* ZK0135_S3* ZK0137_S60* ZK0140_S43* ZK0143_S21* ZK0145_S12* ZK0160_S10* ZK0162_S29* ZK0170_S68* ZK0171_S46* ZK0172_S7* ZK0180_S6* ZK0182_S41* ZK0185_S54* ZK0187_S55* ZK0188_S26* ZK0191_S45* ZK0193_S17* ZK0194_S67* ZK0195_S28* ZK0196_S59* ZK0198_S44* ZK0202_S14* \
+2137_S38* 2167_S48* 2173_S42* 3051_S66* 3053_S47* 4171_S57* 4175_S37* 4230_S5* \
+$HOME/datasets/arboba-rnaseq/align/align-cd/
+#chikv versus zikv
+cp --recursive ZK0041_S23* ZK0043_S65* ZK0046_S2* ZK0048_S32* ZK0049_S34* ZK0066_S1* ZK0085_S31* ZK0087_S16* ZK0088_S30* ZK0094_S52* ZK0104_S27* ZK0126_S19* ZK0129_S63* ZK0130_S22* ZK0134_S15* ZK0135_S3* ZK0137_S60* ZK0140_S43* ZK0143_S21* ZK0145_S12* ZK0160_S10* ZK0162_S29* ZK0170_S68* ZK0171_S46* ZK0172_S7* ZK0180_S6* ZK0182_S41* ZK0185_S54* ZK0187_S55* ZK0188_S26* ZK0191_S45* ZK0193_S17* ZK0194_S67* ZK0195_S28* ZK0196_S59* ZK0198_S44* ZK0202_S14* \
+140_S33* 193_S11* 200_S18* 210_S62* 225_S20* 227_S49* 241_S53* 39_S35* ZK0099_S64* ZK0110_S8* ZK0111_S61* ZK0128_S36* \
+$HOME/datasets/arboba-rnaseq/align/align-cz/
+#denv versus zikv
+cp --recursive 2137_S38* 2167_S48* 2173_S42* 3051_S66* 3053_S47* 4171_S57* 4175_S37* 4230_S5* \
+140_S33* 193_S11* 200_S18* 210_S62* 225_S20* 227_S49* 241_S53* 39_S35* ZK0099_S64* ZK0110_S8* ZK0111_S61* ZK0128_S36* \
+$HOME/datasets/arboba-rnaseq/align/align-dz/
 ```
 ---
 
@@ -549,7 +501,7 @@ Montar script de análise de acordo com o desenho experimental (baseado em: [ste
 
 # Import data from featureCounts
 # Importar dados obtidos do featureCounts
-countdata <- read.table("F:\\RNASeqArbovirusFiocruzBA\\counts\\counts-chikv\\counts.txt", header=TRUE, row.names=1)
+countdata <- read.table("D:\\RNASeqArbovirusFiocruzBA\\analysis\\counts\\counts-c\\counts.txt", header=TRUE, row.names=1)
 
 # Remove first five columns (chr, start, end, strand, length)
 # Remover as p´rimeiras cinco colunas (chr, start, end, strand, length)
@@ -557,21 +509,29 @@ countdata <- countdata[ ,6:ncol(countdata)]
 
 # Remove _Aligned.sortedByCoord.out.bam from filenames
 # Remover _Aligned.sortedByCoord.out.bam do nome dos arquivos
-colnames(countdata) <- gsub("\\_Aligned.sortedByCoord.out.bam$", "", colnames(countdata))
+colnames(countdata) <- gsub("\\_Aligned.sortedByCoord.out.bam", "", colnames(countdata))
 
 # Convert to matrix
 # Converter para matrix
 countdata <- as.matrix(countdata)
 head(countdata)
 
-# Assign condition (first "(rep(x)" contain the expansion - exp, second " (rep(x)" are controls - ctl)
+# Assign condition (first "(rep(x)" contain the experiment - exp, second "(rep(x)" are controls - ctrl)
 # Atribuir condicoes (o primeiro "(rep(x)" são os experimentos - exp, o segundo "(rep(x)" são os controles)
-(condition <- factor(c(rep("exp", 37), rep("ctl", 9))))
+(condition <- factor(c(rep("chikv", 37), rep("ctrl", 9))))
 
 
 ## Analysis with DESeq2 -----------------------------------------------------------------------------------------
 ## Analise com DESeq2 -------------------------------------------------------------------------------------------
 
+# Install DESeq2 package
+# Instalar o pacote DESeq2
+#if (!requireNamespace("BiocManager", quietly = TRUE))
+#  install.packages("BiocManager")
+#BiocManager::install("DESeq2")
+
+# Load DESeq2 package
+# Carregar o pacote DESeq2
 library(DESeq2)
 
 # Create a coldata frame and instantiate the DESeqDataSet. See ?DESeqDataSetFromMatrix
@@ -582,14 +542,14 @@ dds <- estimateSizeFactors(dds)
 counts(dds, normalized=TRUE)
 idx <- rowSums(counts(dds, normalized=TRUE) >= 5) >=3
 dds <- dds[idx,]
- 
+
 # Run the DESeq pipeline
 # Iniciar o pipeline DESeq
 dds <- DESeq(dds)
 
 # Plot dispersions
 # Plots de dispersao
-png("F:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\qc-dispersions.png", 1000, 1000, pointsize=20)
+png("D:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\qc-dispersions.png", 3000, 3000, pointsize=50)
 plotDispEsts(dds, main="Dispersion plot")
 dev.off()
 
@@ -598,6 +558,12 @@ dev.off()
 rld <- rlogTransformation(dds)
 head(assay(rld))
 hist(assay(rld))
+par( mfrow = c( 1, 2 ) )
+dds <- estimateSizeFactors(dds)
+plot( log2( 1 + counts(dds, normalized=TRUE)[ , 1:2] ),
+      col=rgb(0,0,0,.2), pch=16, cex=0.3 )
+plot( assay(rld)[ , 1:2],
+      col=rgb(0,0,0,.2), pch=16, cex=0.3 )
 
 # Colors for plots below
 # Cores para os plots
@@ -608,7 +574,7 @@ library(RColorBrewer)
 # Heatmap de dispersao das amostras
 sampleDists <- as.matrix(dist(t(assay(rld))))
 library(gplots)
-png("F:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\qc-heatmap-samples.png", w=1000, h=1000, pointsize=20)
+png("D:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\qc-heatmap-samples.png", w=3000, h=3000, pointsize=50)
 heatmap.2(as.matrix(sampleDists), key=F, trace="none",
           col=colorpanel(100, "black", "white"),
           ColSideColors=mycols[condition], RowSideColors=mycols[condition],
@@ -617,6 +583,7 @@ dev.off()
 
 # Principal components analysis
 # Analise de componentes principais
+plotPCA(rld, intgroup="condition")
 rld_pca <- function (rld, intgroup = "condition", ntop = 500, colors=NULL, legendpos="bottomleft", main="PCA Biplot", textcx=1, ...) {
   require(genefilter)
   require(calibrate)
@@ -643,8 +610,8 @@ rld_pca <- function (rld, intgroup = "condition", ntop = 500, colors=NULL, legen
   #            pch = 16, cerld = 2, aspect = "iso", col = colours, main = draw.key(key = list(rect = list(col = colours),
   #                                                                                         terldt = list(levels(fac)), rep = FALSE)))
 }
-png("F:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\qc-pca.png", 1000, 1000, pointsize=20)
-rld_pca(rld, colors=mycols, intgroup="condition", xlim=c(-75, 35))
+png("D:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\qc-pca.png", 3000, 3000, pointsize=50)
+rld_pca(rld, colors=mycols, intgroup="condition", xlim=c(-35, 45))
 dev.off()
 
 # Get differential expression results
@@ -664,7 +631,7 @@ head(resdata)
 
 ## Write results
 ## Salvar resultados
-write.csv(resdata, file="F:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\diffexpr-results.csv")
+write.csv(resdata, file="D:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\diffexpr-results.csv")
 
 ## Examine plot of p-values
 ## Examinar plot do valor de p
@@ -685,7 +652,7 @@ maplot <- function (res, thresh=0.05, labelsig=TRUE, textcx=1, ...) {
     with(subset(res, padj<thresh), textxy(baseMean, log2FoldChange, labs=Gene, cex=textcx, col=2))
   }
 }
-png("F:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\diffexpr-maplot.png", 1500, 1000, pointsize=20)
+png("D:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\diffexpr-maplot.png", 2500, 2000, pointsize=20)
 maplot(resdata, main="MA Plot")
 dev.off()
 
@@ -698,11 +665,11 @@ volcanoplot <- function (resdata, lfcthresh=2, sigthresh=0.05, main="Volcano Plo
   with(subset(res, padj<sigthresh & abs(log2FoldChange)>lfcthresh), points(log2FoldChange, -log10(pvalue), pch=20, col="green", ...))
   if (labelsig) {
     require(calibrate)
-    with(subset(res, padj<sigthresh & abs(log2FoldChange)>lfcthresh), textxy(log2FoldChange, -log10(pvalue), labs=Gene, cex=textcx, ...))
+    with(subset(res, padj<sigthresh & abs(log2FoldChange)>lfcthresh), textxy(log2FoldChange, -log10(pvalue), labs=NULL, cex=textcx, ...))
   }
   legend(legendpos, xjust=1, yjust=1, legend=c(paste("FDR<",sigthresh,sep=""), paste("|LogFC|>",lfcthresh,sep=""), "both"), pch=20, col=c("red","orange","green"))
 }
-png("F:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\diffexpr-volcanoplot.png", 1200, 1000, pointsize=20)
+png("D:\\RNASeqArbovirusFiocruzBA\\analysis\\DESeq\\diffexpr-volcanoplot.png", 2200, 2000, pointsize=30)
 volcanoplot(resdata, lfcthresh=1, sigthresh=0.05, textcx=.8, xlim=c(-2.3, 2))
 dev.off()
 ```
