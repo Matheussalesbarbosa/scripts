@@ -1,7 +1,10 @@
 #!/bin/bash
-echo '#!/bin/bash' >> STAR_alignReads_SortedByCoordinated_cmd.sh
+# criar diretorio
+mkdir $HOME/datasets/arboba-rnaseq/align/
+# gerar script para mapear o genoma referencia com as amostras
+echo '#!/bin/bash' >> align_reads_cmd.sh
 for i in `ls -1 *R1_paired*.fastq.gz | sed 's/\_R1_paired.fastq.gz//'`
-do echo nohup STAR \
+do echo STAR \
 --runThreadN 12 \
 --runMode alignReads \
 --genomeDir $HOME/datasets/arboba-rnaseq/index/ \
@@ -11,9 +14,8 @@ do echo nohup STAR \
 --outFileNamePrefix $HOME/datasets/arboba-rnaseq/align/$i\_ \
 --outSAMtype BAM SortedByCoordinate \
 --outReadsUnmapped Fastx \
->> STAR_alignReads_SortedByCoordinated_cmd.sh
+>> align_reads_cmd.sh
 done
-#nohup: permite executar o comando em segundo plano
 #--runThreadN: numero de threads utilizados para processar simultaneamente os processos da analise
 #--runMode: tipo de funcionamento do STAR (genomeGenerate: gerar indices; alignReads: mapear leituras)
 #--genomeDir: diretorio dos arquivos do index

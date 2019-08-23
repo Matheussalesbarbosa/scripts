@@ -1,19 +1,26 @@
 #!/bin/bash
-echo '#!/bin/bash' >> trimmomatic_cmd.sh
+# criar diretorio
+mkdir $HOME/datasets/arboba-rnaseq/trimmed/
+# gerar script para filtrar e cortar as leituras de baixa qualidade
+echo '#!/bin/bash' >> trimming_reads_cmd.sh
 for i in `ls -1 *R1*.fastq.gz | sed 's/\_R1.fastq.gz//'`
-do echo nohup trimmomatic \
+do echo trimmomatic \
 PE \
 -phred33 \
 -threads 12 \
-$HOME/datasets/arboba-rnaseq/concatenated/$i\_R1.fastq.gz $HOME/datasets/arboba-rnaseq/concatenated/$i\_R2.fastq.gz $HOME/datasets/arboba-rnaseq/trimmed/$i\_R1_paired.fastq.gz $HOME/datasets/arboba-rnaseq/trimmed/$i\_R1_unpaired.fastq.gz $HOME/datasets/arboba-rnaseq/trimmed/$i\_R2_paired.fastq.gz $HOME/datasets/arboba-rnaseq/trimmed/$i\_R2_unpaired.fastq.gz \
+$HOME/datasets/arboba-rnaseq/concatenated/$i\_R1.fastq.gz \
+$HOME/datasets/arboba-rnaseq/concatenated/$i\_R2.fastq.gz \
+$HOME/datasets/arboba-rnaseq/trimmed/$i\_R1_paired.fastq.gz \
+$HOME/datasets/arboba-rnaseq/trimmed/$i\_R1_unpaired.fastq.gz \
+$HOME/datasets/arboba-rnaseq/trimmed/$i\_R2_paired.fastq.gz \
+$HOME/datasets/arboba-rnaseq/trimmed/$i\_R2_unpaired.fastq.gz \
 ILLUMINACLIP:$HOME/softwares/miniconda3/envs/rna-seq/share/trimmomatic-0.39-1/adapters/TruSeq3-PE.fa:2:30:10 \
 LEADING:3 \
 TRAILING:3 \
 SLIDINGWINDOW:4:15 \
 MINLEN:36 \
->> trimmomatic_cmd.sh
+>> trimming_reads_cmd.sh
 done
-#nohup: permite executar o comando em segundo plano
 #PE: modo paired-end do trimmomatic
 #-phred33: escala de qualidade utilizada pelas metodologias Sanger e Illumina 1.8+
 #-threads: numero de threads utilizados para processar simultaneamente os processos da analise
