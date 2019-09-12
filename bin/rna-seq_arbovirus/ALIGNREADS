@@ -1,0 +1,24 @@
+#!/bin/bash
+mkdir $HOME/datasets/rna-seq_arbovirus/align/ # criar diretorio
+echo '#!/bin/bash' >> align_reads_cmd.sh # gerar script para mapear o genoma referencia com as amostras
+for i in `ls -1 *R1_paired*.fastq.gz | sed 's/\_R1_paired.fastq.gz//'`
+do echo STAR \
+--runThreadN 12 \ # numero de threads utilizados para processar simultaneamente os processos da analise
+--runMode alignReads \ # tipo de funcionamento do STAR (genomeGenerate: gerar indices; alignReads: mapear leituras)
+--genomeDir $HOME/datasets/rna-seq_arbovirus/index/ \ # diretorio dos arquivos do index
+--sjdbGTFfile $HOME/datasets/rna-seq_arbovirus/refs/gencode.v31.chr_patch_hapl_scaff.annotation.gtf \ # arquivo de anotacao dos transcritos do genoma referencia
+--readFilesIn $HOME/datasets/rna-seq_arbovirus/trimmed/$i\_R1_paired.fastq.gz $HOME/datasets/rna-seq_arbovirus/trimmed/$i\_R2_paired.fastq.gz \ # arquivos de entrada das leituras R1 e R2 paired da amostra
+--readFilesCommand zcat \ # comando utilizado caso as leituras estejam compactadas (para arquivos *.gz, utilizar zcat; para *.bz2 utilizar bunzip2 -c)
+--outFileNamePrefix $HOME/datasets/rna-seq_arbovirus/align/$i\_ \ # determina o diretorio e o prefixo para nomear os arquivos de saida
+--outSAMtype BAM SortedByCoordinate \ # determina o tipo de arquivo de saida do mapeamento (padrao: SAM; BAM Unsorted: arquivo binario sem estar ordenado; BAM SortedByCoordinate: arquivo binario ordenado de acordo com a anotacao dos transcritos do genoma referencia)
+--outReadsUnmapped Fastx \ # determina que as leituras nao mapeadas gerem arquivos de saida
+>> align_reads_cmd.sh
+done
+# ARQUIVOS DE SAIDA
+## _Aligned.sortedByCoord.out.bam: arquivo de saida do mapeamento da amostra
+## _Log.final.out: arquivo de saida com o sumario da estatistica do mapeamento
+## _Log.out: arquivo de saida com informacoes resumidas da estatistica do processo da analise de acordo com o progresso de cada etapa
+## _Log.progress.out: arquivo de saida com informacoes e mensagens do processo de analise
+## _SJ.out.tab: arquivo de saida com informacoes das juncoes de splicing
+## _Unmapped.out.mate1`` arquivos de saida das leituras R1 nao mapeadas
+## _Unmapped.out.mate2`` arquivos de saida das leituras R2 nao mapeadas

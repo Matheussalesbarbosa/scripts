@@ -1,0 +1,21 @@
+#!/bin/bash
+mkdir $HOME/datasets/rna-seq_arbovirus/trimmed/ # criar diretorio
+echo '#!/bin/bash' >> trimming_reads_cmd.sh # gerar script para filtrar e cortar as leituras de baixa qualidade
+for i in `ls -1 *R1*.fastq.gz | sed 's/\_R1.fastq.gz//'`
+do echo trimmomatic \
+PE \ # modo paired-end do trimmomatic
+-phred33 \ # escala de qualidade utilizada pelas metodologias Sanger e Illumina 1.8+
+-threads 12 \ # numero de threads utilizados para processar simultaneamente os processos da analise
+$HOME/datasets/rna-seq_arbovirus/concatenated/$i\_R1.fastq.gz \ # arquivo de entrada com as leituras R1 da amostra
+$HOME/datasets/rna-seq_arbovirus/concatenated/$i\_R2.fastq.gz \ # arquivo de entrada com as leituras R2 da amostra
+$HOME/datasets/rna-seq_arbovirus/trimmed/$i\_R1_paired.fastq.gz \ # arquivo de saida para as leituras R1 que pareiam com as leituras R2
+$HOME/datasets/rna-seq_arbovirus/trimmed/$i\_R1_unpaired.fastq.gz \ # arquivo de saida para as leituras R1 que NAO pareiam com as leituras R2
+$HOME/datasets/rna-seq_arbovirus/trimmed/$i\_R2_paired.fastq.gz \ # arquivo de saida para as leituras R2 que pareiam com as leituras R1
+$HOME/datasets/rna-seq_arbovirus/trimmed/$i\_R2_unpaired.fastq.gz \ # arquivo de saida para as leituras R2 que NAO pareiam com as leituras R1
+ILLUMINACLIP:$HOME/softwares/miniconda3/envs/rna-seq/share/trimmomatic-0.39-1/adapters/TruSeq3-PE.fa:2:30:10 \ # identifica qual tipo de adaptador sera trimado
+LEADING:3 \ # corta bases de nucleotideos no inicio das leituras, de acordo com a escala Q-score
+TRAILING:3 \ # corta bases de nucleotideos no final das leituras, de acordo com a escala Q-score
+SLIDINGWINDOW:4:15 \ # estrategia de "janela deslizante" para varredura da leitura a partir da extremidade 5' para trimar as leituras, caso o Q-score seja menor que o estipulado
+MINLEN:36 \ # descarta leituras de acordo com o tamanho minimo definido
+>> trimming_reads_cmd.sh
+done

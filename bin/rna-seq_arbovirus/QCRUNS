@@ -1,0 +1,27 @@
+#!/bin/bash
+mkdir $HOME/datasets/rna-seq_arbovirus/qc/ && \
+mkdir $HOME/datasets/rna-seq_arbovirus/qc/qc-r1/ && \
+mkdir $HOME/datasets/rna-seq_arbovirus/qc/qc-r2/ && \
+mkdir $HOME/datasets/rna-seq_arbovirus/qc/qc-r3/ && \
+mkdir $HOME/datasets/rna-seq_arbovirus/qc/qc-r4/ && \
+mkdir $HOME/datasets/rna-seq_arbovirus/qc/qc-r5/ # criar diretorios
+fastqc \
+$HOME/datasets/rna-seq_arbovirus/run1/*.fastq.gz \ # seleciona os arquivos *.fastq.gz para a analise
+--outdir $HOME/datasets/rna-seq_arbovirus/qc/qc-r1/ \ # diretorio para os arquivos de saida da analise (output)
+--threads 12 # numero de threads utilizados para processar simultaneamente os processos da analise
+fastqc \
+$HOME/datasets/rna-seq_arbovirus/run2/*.fastq.gz \
+--outdir $HOME/datasets/rna-seq_arbovirus/qc/qc-r2/ \
+--threads 12
+fastqc \
+$HOME/datasets/rna-seq_arbovirus/run3/*.fastq.gz \
+--outdir $HOME/datasets/rna-seq_arbovirus/qc/qc-r3/ \
+--threads 12
+fastqc \
+$HOME/datasets/rna-seq_arbovirus/run4/*.fastq.gz \
+--outdir $HOME/datasets/rna-seq_arbovirus/qc/qc-r4/ \
+--threads 12
+fastqc \
+$HOME/datasets/rna-seq_arbovirus/run5/*.fastq.gz \
+--outdir $HOME/datasets/rna-seq_arbovirus/qc/qc-r5/ \
+--threads 12

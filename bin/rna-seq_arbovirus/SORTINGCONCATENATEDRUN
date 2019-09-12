@@ -1,0 +1,4 @@
+#!/bin/bash
+mkdir $HOME/datasets/rna-seq_arbovirus/concatenated # criar diretorio
+find $HOME/datasets/rna-seq_arbovirus/run -type f -name '*.fastq.gz' \
+-exec cp -at $HOME/datasets/rna-seq_arbovirus/concatenated {} + # copiar todas as leituras para um diretorio
