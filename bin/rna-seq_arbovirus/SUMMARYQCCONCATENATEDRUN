@@ -1,7 +1,0 @@
-#!/bin/bash
-cd $HOME/datasets/rna-seq_arbovirus/qc/qc-concatenated/ && \
-multiqc \
---fullnames \ # manter o nome do arquivo que vai ser analisado
---title ArbovirusBahiaRNASeq \ # criar um titulo para o relatorio do multiqc
---interactive \ # utilizar plots iterativos
---export $HOME/datasets/rna-seq_arbovirus/qc/qc-concatenated/ # exportar plots das analises do multiqc

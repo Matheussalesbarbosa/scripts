@@ -1,0 +1,3 @@
+#!/bin/bash
+read -e -r -p 'Set the '.gz.tar' file: ' set1
+nohup tar -xvf ${set1}

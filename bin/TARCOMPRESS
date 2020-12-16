@@ -1,0 +1,3 @@
+#!/bin/bash
+read -e -r -p 'Set the file/folder: ' set1
+nohup tar -czvf ${set1}.tar.gz ${set1}

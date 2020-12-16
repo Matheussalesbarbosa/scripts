@@ -1,7 +1,0 @@
-#!/bin/bash
-mkdir $HOME/datasets/rna-seq_arbovirus/index/ # criar diretorio
-STAR \
---runThreadN 12 \ # numero de threads utilizados para processar simultaneamente os processos da analise
---runMode genomeGenerate \ # tipo de funcionamento do STAR (genomeGenerate: gerar indices; alignReads: mapear leituras)
---genomeDir $HOME/datasets/rna-seq_arbovirus/index/ \ # diretorio para armazenar os arquivos do index
---genomeFastaFiles $HOME/datasets/rna-seq_arbovirus/refs/GRCh38.p12.genome.fa # arquivo do genoma referencia

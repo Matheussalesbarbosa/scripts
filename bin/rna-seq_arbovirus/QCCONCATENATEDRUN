@@ -1,6 +1,0 @@
-#!/bin/bash
-mkdir $HOME/datasets/rna-seq_arbovirus/qc/qc-concatenated/ # criar diretorio
-fastqc \
-$HOME/datasets/rna-seq_arbovirus/concatenated/*.fastq.gz \ # seleciona os arquivos *.fastq.gz para a analise
---outdir $HOME/datasets/rna-seq_arbovirus/qc/qc-concatenated/ \ # diretorio para os arquivos de saida da analise (output)
---threads 12 # numero de threads utilizados para processar simultaneamente os processos da analise

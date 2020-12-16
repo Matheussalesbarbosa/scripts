@@ -1,0 +1,3 @@
+#!/bin/bash
+curl http://data.biostarhandbook.com/install/bash_profile.txt >> ~/.bash_profile
+curl http://data.biostarhandbook.com/install/bashrc.txt >> ~/.bashrc && source ~/.bash_profile

@@ -1,0 +1,3 @@
+#!/bin/bash
+read -e -r -p 'Set the file to convet: ' set1
+sed -i -e awk '{print ">"$1"\n"$2}' ${set1}

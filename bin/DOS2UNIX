@@ -1,0 +1,3 @@
+#!/bin/bash
+read -e -r -p 'Set the file to convert DOS-style to UNIX-style line ends: ' set1
+sed -i -e 's/\r$//' ${set1}

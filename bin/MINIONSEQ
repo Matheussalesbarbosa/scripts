@@ -1,4 +1,0 @@
-#!/bin/bash
-cd $HOME/softwares/minion-seq
-source activate minion-seq
-nohup snakemake --use-conda
